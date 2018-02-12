@@ -3,6 +3,7 @@ namespace Yurun\Util;
 
 use \Yurun\Util\Chinese\Pinyin;
 use \Yurun\Util\Chinese\PinyinSplit;
+use \Yurun\Util\Chinese\SimplifiedAndTraditional;
 
 class Chinese
 {
@@ -53,7 +54,17 @@ class Chinese
 		{
 			static::init();
 		}
-		return Pinyin::convert($string, $mode);
+		return Pinyin::convert($string, $mode, $wordSplit);
+	}
+
+	/**
+	 * 拼音分词
+	 * @param string $string
+	 * @return array
+	 */
+	public static function splitPinyin($string)
+	{
+		return PinyinSplit::split($string);
 	}
 
 	/**
@@ -67,6 +78,7 @@ class Chinese
 		{
 			static::init();
 		}
+		return SimplifiedAndTraditional::toSimplified($string);
 	}
 
 	/**
@@ -80,6 +92,7 @@ class Chinese
 		{
 			static::init();
 		}
+		return SimplifiedAndTraditional::toTraditional($string);
 	}
 
 	/**
