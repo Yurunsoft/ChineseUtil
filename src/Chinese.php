@@ -2,6 +2,7 @@
 namespace Yurun\Util;
 
 use \Yurun\Util\Chinese\Pinyin;
+use \Yurun\Util\Chinese\PinyinSplit;
 
 class Chinese
 {
@@ -92,11 +93,11 @@ class Chinese
 			static::init();
 		}
 		$result = [];
-		$result['chars'] = count(static::$chineseData);
+		$result['chars'] = count(static::$chineseData['chars']);
 		$scCount = 0;
 		$tcCount = 0;
 		$otherCount = 0;
-		foreach(static::$chineseData as $item)
+		foreach(static::$chineseData['chars'] as $item)
 		{
 			if($item['isSC'] === $item['isTC'])
 			{

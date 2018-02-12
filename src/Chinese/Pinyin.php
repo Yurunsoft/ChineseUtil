@@ -187,9 +187,9 @@ class Pinyin
 		for($i = 0; $i < $len; ++$i)
 		{
 			$word = mb_substr($string, $i, 1, 'UTF-8');
-			if(isset(Chinese::$chineseData[$word]))
+			if(isset(Chinese::$chineseData['chars'][$word]))
 			{
-				$list[] = Chinese::$chineseData[$word];
+				$list[] = Chinese::$chineseData['chars'][$word];
 			}
 			else
 			{
