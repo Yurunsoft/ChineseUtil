@@ -2,6 +2,8 @@
 namespace Yurun\Util;
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 use \Yurun\Util\Chinese\Pinyin;
+$info = Chinese::info();
+echo '总共收录 ', $info['chars'], ' 个汉字，', $info['scCount'], ' 个简体字，', $info['tcCount'], ' 个繁体字，', $info['otherCount'], ' 个其它汉字。', PHP_EOL;
 $string = '恭喜發財！把我翻译成拼音看下？';
 echo $string, PHP_EOL;
 echo '所有结果:', PHP_EOL;

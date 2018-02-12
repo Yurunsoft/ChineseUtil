@@ -81,4 +81,39 @@ class Chinese
 		}
 	}
 
+	/**
+	 * 返回中文数据信息
+	 * @return array
+	 */
+	public static function info()
+	{
+		if(!static::$isInited)
+		{
+			static::init();
+		}
+		$result = [];
+		$result['chars'] = count(static::$chineseData);
+		$scCount = 0;
+		$tcCount = 0;
+		$otherCount = 0;
+		foreach(static::$chineseData as $item)
+		{
+			if($item['isSC'] === $item['isTC'])
+			{
+				++$otherCount;
+			}
+			else if($item['isSC'])
+			{
+				++$scCount;
+			}
+			else
+			{
+				++$tcCount;
+			}
+		}
+		$result['scCount'] = $scCount;
+		$result['tcCount'] = $tcCount;
+		$result['otherCount'] = $otherCount;
+		return $result;
+	}
 }
