@@ -64,6 +64,10 @@ class Chinese
 	 */
 	public static function splitPinyin($string)
 	{
+		if(!static::$isInited)
+		{
+			static::init();
+		}
 		return PinyinSplit::split($string);
 	}
 
