@@ -9,6 +9,20 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 本类库字典数据加载后会占用 40+ MB 内存，在访问量大的接口要使用此类汉字转拼音、繁简转换功能时，推荐用 Swoole 开发一个异步服务程序，只需加载一次数据，就可以持续高效地为你提供服务。
 
+## 使用说明
+
+### Composer 直接安装
+
+`composer require yurunsoft/chinese-util`
+
+### Composer 项目配置引入
+
+```
+"require": {
+    "yurunsoft/chinese-util" : "~1.0"
+}
+```
+
 ## 功能
 
 ### 汉字转拼音
