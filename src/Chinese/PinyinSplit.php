@@ -230,6 +230,6 @@ class PinyinSplit
 		{
 			$result .= mb_substr($string, $i, 1, 'UTF-8') . ' ';
 		}
-		return $result;
+		return isset($result[1]) ? substr($result, 0, -1) : $result;
 	}
 }

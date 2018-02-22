@@ -8,6 +8,31 @@ use \Yurun\Util\Chinese\SimplifiedAndTraditional;
 class Chinese
 {
 	/**
+	 * 数据索引-拼音
+	 */
+	const INDEX_PINYIN = 0;
+
+	/**
+	 * 数据索引-对应的简体字
+	 */
+	const INDEX_SC = 1;
+
+	/**
+	 * 数据索引-对应的繁体字
+	 */
+	const INDEX_TC = 2;
+
+	/**
+	 * 数据索引-是否为简体字
+	 */
+	const INDEX_IS_SC = 3;
+
+	/**
+	 * 数据索引-是否为繁体字
+	 */
+	const INDEX_IS_TC = 4;
+
+	/**
 	 * 是否已初始化
 	 * @var boolean
 	 */
@@ -48,13 +73,13 @@ class Chinese
 	 * @param string $wordSplit
 	 * @return array
 	 */
-	public static function toPinyin($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = ' ')
+	public static function toPinyin($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = null)
 	{
 		if(!static::$isInited)
 		{
 			static::init();
 		}
-		return Pinyin::convert($string, $mode, $wordSplit);
+		return Pinyin::toText($string, $mode, $wordSplit);
 	}
 
 	/**
@@ -116,11 +141,11 @@ class Chinese
 		$otherCount = 0;
 		foreach(static::$chineseData['chars'] as $item)
 		{
-			if($item['isSC'] === $item['isTC'])
+			if($item[static::INDEX_IS_SC] === $item[static::INDEX_IS_TC])
 			{
 				++$otherCount;
 			}
-			else if($item['isSC'])
+			else if($item[static::INDEX_IS_SC])
 			{
 				++$scCount;
 			}

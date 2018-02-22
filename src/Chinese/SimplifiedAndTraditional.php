@@ -12,7 +12,7 @@ class SimplifiedAndTraditional
 	 */
 	public static function toSimplified($string)
 	{
-		return static::parseResult(static::getResult($string, 'sc'));
+		return static::parseResult(static::getResult($string, Chinese::INDEX_SC));
 	}
 
 	/**
@@ -22,7 +22,7 @@ class SimplifiedAndTraditional
 	 */
 	public static function toTraditional($string)
 	{
-		return static::parseResult(static::getResult($string, 'tc'));
+		return static::parseResult(static::getResult($string, Chinese::INDEX_TC));
 	}
 
 	/**

@@ -31,13 +31,25 @@ class Pinyin
 	const CONVERT_MODE_FULL = 15;
 
 	/**
-	 * 把字符串转为拼音结果
+	 * 把字符串转为拼音结果，返回的数组成员为数组
 	 * @param string $string
 	 * @param int $mode
 	 * @param string $wordSplit
 	 * @return array
 	 */
-	public static function convert($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = ' ')
+	public static function convert($string, $mode = Pinyin::CONVERT_MODE_FULL)
+	{
+		return self::parseResult(self::getResult($string), $mode, null);
+	}
+
+	/**
+	 * 把字符串转为拼音结果，返回的数组成员为字符串
+	 * @param string $string
+	 * @param int $mode
+	 * @param string $wordSplit
+	 * @return array
+	 */
+	public static function toText($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = ' ')
 	{
 		return self::parseResult(self::getResult($string), $mode, $wordSplit);
 	}
@@ -49,129 +61,94 @@ class Pinyin
 	 * @param string $wordSplit
 	 * @return void
 	 */
-	public static function parseResult($list, $mode, $wordSplit = '')
+	public static function parseResult($list, $mode, $wordSplit)
 	{
+		$pinyinSounds = [[]];
+		$oldResultCount = null;
+		foreach($list as $item)
+		{
+			$item[Chinese::INDEX_PINYIN] = explode(',', $item[Chinese::INDEX_PINYIN]);
+			// 拼音和拼音首字母
+			$count = count($item[Chinese::INDEX_PINYIN]);
+			$oldResultCount = count($pinyinSounds);
+			$oldResultPinyin = $pinyinSounds;
+			for($i = 0; $i < $count - 1; ++$i)
+			{
+				$pinyinSounds = array_merge($pinyinSounds, $oldResultPinyin);
+			}
+			foreach($item[Chinese::INDEX_PINYIN] as $index => $pinyin)
+			{
+				for($i = 0; $i < $oldResultCount; ++$i)
+				{
+					$j = $index * $oldResultCount + $i;
+					// $pinyinSounds[$j] .= $pinyin . $wordSplit;
+					$pinyinSounds[$j][] = $pinyin;
+				}
+			}
+		}
+
 		$isPinyin = (($mode & static::CONVERT_MODE_PINYIN) === static::CONVERT_MODE_PINYIN);
-		$isPinyinSound = (($mode & static::CONVERT_MODE_PINYIN_SOUND) === static::CONVERT_MODE_PINYIN_SOUND);
 		$isPinyinSoundNumber = (($mode & static::CONVERT_MODE_PINYIN_SOUND_NUMBER) === static::CONVERT_MODE_PINYIN_SOUND_NUMBER);
 		$isPinyinFirst = (($mode & static::CONVERT_MODE_PINYIN_FIRST) === static::CONVERT_MODE_PINYIN_FIRST);
 		$result = [];
 		if($isPinyin)
 		{
-			$result['pinyin'] = [''];
-		}
-		if($isPinyinSound)
-		{
-			$result['pinyinSound'] = [''];
+			$result['pinyin'] = [];
 		}
 		if($isPinyinSoundNumber)
 		{
-			$result['pinyinSoundNumber'] = [''];
+			$result['pinyinSoundNumber'] = [];
 		}
 		if($isPinyinFirst)
 		{
-			$result['pinyinFirst'] = [''];
+			$result['pinyinFirst'] = [];
 		}
-		$oldResultCount = null;
-		foreach($list as $item)
+
+		if((($mode & static::CONVERT_MODE_PINYIN_SOUND) === static::CONVERT_MODE_PINYIN_SOUND))
 		{
-			// 拼音和拼音首字母
-			$count = count($item['pinyin']);
-			if($isPinyin || $isPinyinFirst)
+			if(null === $wordSplit)
 			{
-				if($isPinyin)
-				{
-					$oldResultCount = count($result['pinyin']);
-					$oldResultPinyin = $result['pinyin'];
-				}
-				if($isPinyinFirst)
-				{
-					if(null === $oldResultCount)
-					{
-						$oldResultCount = count($result['pinyinFirst']);
-					}
-					$oldResultPinyinFirst = $result['pinyinFirst'];
-				}
-				for($i = 0; $i < $count - 1; ++$i)
-				{
-					if($isPinyin)
-					{
-						$result['pinyin'] = array_merge($result['pinyin'], $oldResultPinyin);
-					}
-					if($isPinyinFirst)
-					{
-						$result['pinyinFirst'] = array_merge($result['pinyinFirst'], $oldResultPinyinFirst);
-					}
-				}
-				foreach($item['pinyin'] as $index => $pinyin)
-				{
-					for($i = 0; $i < $oldResultCount; ++$i)
-					{
-						$j = $index * $oldResultCount + $i;
-						if($isPinyin)
-						{
-							$result['pinyin'][$j] .= $pinyin . $wordSplit;
-						}
-						if($isPinyinFirst)
-						{
-							$result['pinyinFirst'][$j] .= mb_substr($pinyin, 0, 1) . $wordSplit;
-						}
-					}
-				}
+				$result['pinyinSound'] = $pinyinSounds;
 			}
-			// 拼音读音
-			if($isPinyinSound || $isPinyinSoundNumber)
+			else
 			{
-				$oldResultCount = null;
-				if(isset($item['pinyinSound']))
+				foreach($pinyinSounds as $pinyinSoundItem)
 				{
-					$count = count($item['pinyinSound']);
-				}
-				else
-				{
-					$count = 0;
-				}
-				if($isPinyinSound)
-				{
-					$oldResultCount = count($result['pinyinSound']);
-					$oldResultPinyinSound = $result['pinyinSound'];
-				}
-				if($isPinyinSoundNumber)
-				{
-					if(null === $oldResultCount)
-					{
-						$oldResultCount = count($result['pinyinSoundNumber']);
-					}
-					$oldResultPinyinSoundNumber = $result['pinyinSoundNumber'];
-				}
-				for($i = 0; $i < $count - 1; ++$i)
-				{
-					if($isPinyinSound)
-					{
-						$result['pinyinSound'] = array_merge($result['pinyinSound'], $oldResultPinyinSound);
-					}
-					if($isPinyinSoundNumber)
-					{
-						$result['pinyinSoundNumber'] = array_merge($result['pinyinSoundNumber'], $oldResultPinyinSoundNumber);
-					}
-				}
-				for($index = 0; $index < $count; ++$index)
-				{
-					for($i = 0; $i < $oldResultCount; ++$i)
-					{
-						$j = $index * $oldResultCount + $i;
-						if($isPinyinSound)
-						{
-							$result['pinyinSound'][$j] .= $item['pinyinSound'][$index] . $wordSplit;
-						}
-						if($isPinyinSoundNumber)
-						{
-							$result['pinyinSoundNumber'][$j] .= $item['pinyinSoundNumber'][$index] . $wordSplit;
-						}
-					}
+					$result['pinyinSound'][] = implode($wordSplit, $pinyinSoundItem);
 				}
 			}
 		}
+
+		foreach($pinyinSounds as $pinyinSound)
+		{
+			$itemResult = static::parseSoundItem($pinyinSound, $mode);
+			if($isPinyin)
+			{
+				$result['pinyin'][] = null === $wordSplit ? $itemResult['pinyin'] : implode($wordSplit, $itemResult['pinyin']);
+			}
+			if($isPinyinSoundNumber)
+			{
+				$result['pinyinSoundNumber'][] = null === $wordSplit ? $itemResult['pinyinSoundNumber'] : implode($wordSplit, $itemResult['pinyinSoundNumber']);
+			}
+			if($isPinyinFirst)
+			{
+				$result['pinyinFirst'][] = null === $wordSplit ? $itemResult['pinyinFirst'] : implode($wordSplit, $itemResult['pinyinFirst']);
+			}
+		}
+		
+		if($isPinyin)
+		{
+			$result['pinyin'] = static::superUnique($result['pinyin']);
+		}
+		if($isPinyinSoundNumber)
+		{
+			$result['pinyinSoundNumber'] = static::superUnique($result['pinyinSoundNumber']);
+		}
+		if($isPinyinFirst)
+		{
+			$result['pinyinFirst'] = static::superUnique($result['pinyinFirst']);
+		}
+
 		return $result;
 	}
 
@@ -194,10 +171,99 @@ class Pinyin
 			else
 			{
 				$list[] = array(
-					'pinyin'	=>	[$word]
+					Chinese::INDEX_PINYIN	=>	$word
 				);
 			}
 		}
 		return $list;
+	}
+
+	protected static function parseSoundItem($array, $mode)
+	{
+		static $pattern;
+		if(null === $pattern)
+		{
+			$pattern = '/([' . implode('', array_keys(Chinese::$chineseData['pinyin']['sound'])) . '])/u';
+		}
+		$isPinyin = (($mode & static::CONVERT_MODE_PINYIN) === static::CONVERT_MODE_PINYIN);
+		$isPinyinSoundNumber = (($mode & static::CONVERT_MODE_PINYIN_SOUND_NUMBER) === static::CONVERT_MODE_PINYIN_SOUND_NUMBER);
+		$isPinyinFirst = (($mode & static::CONVERT_MODE_PINYIN_FIRST) === static::CONVERT_MODE_PINYIN_FIRST);
+
+		$result = [];
+
+		if($isPinyin)
+		{
+			$result['pinyin'] = [];
+		}
+		if($isPinyinSoundNumber)
+		{
+			$result['pinyinSoundNumber'] = [];
+		}
+		if($isPinyinFirst)
+		{
+			$result['pinyinFirst'] = [];
+		}
+
+		foreach($array as $pinyinSoundItem)
+		{
+			if($isPinyin)
+			{
+				$pinyin = preg_replace_callback(
+					$pattern,
+					function ($matches){
+						return Chinese::$chineseData['pinyin']['sound'][$matches[0]]['ab'];
+					},
+					$pinyinSoundItem,
+					1
+				);
+				$result['pinyin'][] = $pinyin;
+			}
+			if($isPinyinSoundNumber)
+			{
+				$tone = null;
+				$str = preg_replace_callback(
+					$pattern,
+					function ($matches) use(&$tone){
+						$tone = Chinese::$chineseData['pinyin']['sound'][$matches[0]]['tone'];
+						return Chinese::$chineseData['pinyin']['sound'][$matches[0]]['ab'];
+					},
+					$pinyinSoundItem,
+					1
+				);
+				if(null === $tone)
+				{
+					$result['pinyinSoundNumber'][] = $str;
+				}
+				else
+				{
+					$result['pinyinSoundNumber'][] = $str . $tone;
+				}
+			}
+			if($isPinyinFirst)
+			{
+				if(isset($pinyin))
+				{
+					$result['pinyinFirst'][] = mb_substr($pinyin, 0, 1);
+				}
+				else
+				{
+					$result['pinyinFirst'][] = mb_substr(preg_replace_callback(
+						$pattern,
+						function ($matches){
+							return Chinese::$chineseData['pinyin']['sound'][$matches[0]]['ab'];
+						},
+						$pinyinSoundItem,
+						1
+					), 0, 1);
+				}
+			}
+		}
+		
+		return $result;
+	}
+
+	public static function superUnique($array)
+	{
+		return array_map('unserialize', array_unique(array_map('serialize', $array)));
 	}
 }
