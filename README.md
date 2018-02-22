@@ -31,11 +31,8 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 ```php
 use \Yurun\Util\Chinese;
-$string = '恭喜發財！把我翻译成拼音看下？';
+$string = '恭喜發財！';
 echo $string, PHP_EOL;
-
-echo '所有结果:', PHP_EOL;
-var_dump(Chinese::toPinyin($string));
 
 echo '全拼:', PHP_EOL;
 var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN));
@@ -49,43 +46,77 @@ var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN_SOUND));
 echo '读音数字:', PHP_EOL;
 var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER));
 
-echo '自选 + 自定义分隔符:', PHP_EOL;
-var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER, '/'));
+echo '自选返回格式 + 以文本格式返回 + 自定义分隔符:', PHP_EOL;
+var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER, ' '));
 
+echo '所有结果:', PHP_EOL;
+var_dump(Chinese::toPinyin($string));
 /**
-输出结果：
+所有结果:
 array(4) {
   ["pinyin"]=>
   array(1) {
     [0]=>
-    string(58) "gong xi fa cai ！ ba wo fan yi cheng pin yin kan xia ？ "
-  }
-  ["pinyinSound"]=>
-  array(4) {
-    [0]=>
-    string(63) "gōng xǐ fā cái bǎ wǒ fān yì chéng pīn yīn kàn xià "
-    [1]=>
-    string(63) "gōng xǐ fā cái bà wǒ fān yì chéng pīn yīn kàn xià "
-    [2]=>
-    string(63) "gōng xǐ fā cái bǎ wǒ fān yì chéng pīn yīn kān xià "
-    [3]=>
-    string(63) "gōng xǐ fā cái bà wǒ fān yì chéng pīn yīn kān xià "
+    array(5) {
+      [0]=>
+      string(4) "gong"
+      [1]=>
+      string(2) "xi"
+      [2]=>
+      string(2) "fa"
+      [3]=>
+      string(3) "cai"
+      [4]=>
+      string(3) "！"
+    }
   }
   ["pinyinSoundNumber"]=>
-  array(4) {
+  array(1) {
     [0]=>
-    string(63) "gong1 xi3 fa1 cai2 ba3 wo3 fan1 yi4 cheng2 pin1 yin1 kan4 xia4 "
-    [1]=>
-    string(63) "gong1 xi3 fa1 cai2 ba4 wo3 fan1 yi4 cheng2 pin1 yin1 kan4 xia4 "
-    [2]=>
-    string(63) "gong1 xi3 fa1 cai2 ba3 wo3 fan1 yi4 cheng2 pin1 yin1 kan1 xia4 "
-    [3]=>
-    string(63) "gong1 xi3 fa1 cai2 ba4 wo3 fan1 yi4 cheng2 pin1 yin1 kan1 xia4 "
+    array(5) {
+      [0]=>
+      string(5) "gong1"
+      [1]=>
+      string(3) "xi3"
+      [2]=>
+      string(3) "fa1"
+      [3]=>
+      string(4) "cai2"
+      [4]=>
+      string(3) "！"
+    }
   }
   ["pinyinFirst"]=>
   array(1) {
     [0]=>
-    string(34) "g x f c ！ b w f y c p y k x ？ "
+    array(5) {
+      [0]=>
+      string(1) "g"
+      [1]=>
+      string(1) "x"
+      [2]=>
+      string(1) "f"
+      [3]=>
+      string(1) "c"
+      [4]=>
+      string(3) "！"
+    }
+  }
+  ["pinyinSound"]=>
+  array(1) {
+    [0]=>
+    array(5) {
+      [0]=>
+      string(5) "gōng"
+      [1]=>
+      string(3) "xǐ"
+      [2]=>
+      string(3) "fā"
+      [3]=>
+      string(4) "cái"
+      [4]=>
+      string(3) "！"
+    }
   }
 }
 全拼:
@@ -93,7 +124,18 @@ array(1) {
   ["pinyin"]=>
   array(1) {
     [0]=>
-    string(58) "gong xi fa cai ！ ba wo fan yi cheng pin yin kan xia ？ "
+    array(5) {
+      [0]=>
+      string(4) "gong"
+      [1]=>
+      string(2) "xi"
+      [2]=>
+      string(2) "fa"
+      [3]=>
+      string(3) "cai"
+      [4]=>
+      string(3) "！"
+    }
   }
 }
 首字母:
@@ -101,54 +143,69 @@ array(1) {
   ["pinyinFirst"]=>
   array(1) {
     [0]=>
-    string(34) "g x f c ！ b w f y c p y k x ？ "
+    array(5) {
+      [0]=>
+      string(1) "g"
+      [1]=>
+      string(1) "x"
+      [2]=>
+      string(1) "f"
+      [3]=>
+      string(1) "c"
+      [4]=>
+      string(3) "！"
+    }
   }
 }
 读音:
 array(1) {
   ["pinyinSound"]=>
-  array(4) {
+  array(1) {
     [0]=>
-    string(63) "gōng xǐ fā cái bǎ wǒ fān yì chéng pīn yīn kàn xià "
-    [1]=>
-    string(63) "gōng xǐ fā cái bà wǒ fān yì chéng pīn yīn kàn xià "
-    [2]=>
-    string(63) "gōng xǐ fā cái bǎ wǒ fān yì chéng pīn yīn kān xià "
-    [3]=>
-    string(63) "gōng xǐ fā cái bà wǒ fān yì chéng pīn yīn kān xià "
+    array(5) {
+      [0]=>
+      string(5) "gōng"
+      [1]=>
+      string(3) "xǐ"
+      [2]=>
+      string(3) "fā"
+      [3]=>
+      string(4) "cái"
+      [4]=>
+      string(3) "！"
+    }
   }
 }
 读音数字:
 array(1) {
   ["pinyinSoundNumber"]=>
-  array(4) {
+  array(1) {
     [0]=>
-    string(63) "gong1 xi3 fa1 cai2 ba3 wo3 fan1 yi4 cheng2 pin1 yin1 kan4 xia4 "
-    [1]=>
-    string(63) "gong1 xi3 fa1 cai2 ba4 wo3 fan1 yi4 cheng2 pin1 yin1 kan4 xia4 "
-    [2]=>
-    string(63) "gong1 xi3 fa1 cai2 ba3 wo3 fan1 yi4 cheng2 pin1 yin1 kan1 xia4 "
-    [3]=>
-    string(63) "gong1 xi3 fa1 cai2 ba4 wo3 fan1 yi4 cheng2 pin1 yin1 kan1 xia4 "
+    array(5) {
+      [0]=>
+      string(5) "gong1"
+      [1]=>
+      string(3) "xi3"
+      [2]=>
+      string(3) "fa1"
+      [3]=>
+      string(4) "cai2"
+      [4]=>
+      string(3) "！"
+    }
   }
 }
-自选 + 自定义分隔符:
+自选返回格式 + 以文本格式返回 + 自定义分隔符:
 array(2) {
   ["pinyin"]=>
   array(1) {
     [0]=>
-    string(58) "gong/xi/fa/cai/！/ba/wo/fan/yi/cheng/pin/yin/kan/xia/？/"
+    string(18) "gong xi fa cai ！"
   }
   ["pinyinSoundNumber"]=>
-  array(4) {
+  array(1) {
     [0]=>
-    string(63) "gong1/xi3/fa1/cai2/ba3/wo3/fan1/yi4/cheng2/pin1/yin1/kan4/xia4/"
-    [1]=>
-    string(63) "gong1/xi3/fa1/cai2/ba4/wo3/fan1/yi4/cheng2/pin1/yin1/kan4/xia4/"
-    [2]=>
-    string(63) "gong1/xi3/fa1/cai2/ba3/wo3/fan1/yi4/cheng2/pin1/yin1/kan1/xia4/"
-    [3]=>
-    string(63) "gong1/xi3/fa1/cai2/ba4/wo3/fan1/yi4/cheng2/pin1/yin1/kan1/xia4/"
+    string(22) "gong1 xi3 fa1 cai2 ！"
   }
 }
  * /
