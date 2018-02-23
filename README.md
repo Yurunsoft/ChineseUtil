@@ -7,7 +7,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 由于中文的博大精深，字有多音字，简体字和繁体字也有多种对应。并且本类库返回的所有结果，均为包含所有组合的数组。
 
-本类库字典数据总共收录 41578 个汉字，包括：3919 个简体字，1734 个繁体字，35925 个其它汉字。
+本类库字典数据总共收录 41852 个汉字，包括：3955 个简体字，1761 个繁体字，36136 个其它汉字。
 
 加载后会占用 16 MB 内存，在访问量大的接口要使用此类汉字转拼音、繁简转换功能时，推荐用 Swoole 开发一个异步服务程序，只需加载一次数据，就可以持续高效地为你提供服务。
 
@@ -216,11 +216,11 @@ array(2) {
 ```php
 use \Yurun\Util\Chinese;
 $string2 = 'xianggang';
-echo '"', $string2, '"的分词结果：', PHP_EOL;
+echo '"', $string2, '"的分词结果:', PHP_EOL;
 var_dump(Chinese::splitPinyin($string2));
 /**
-输出结果：
-"xianggang"的分词结果：
+输出结果:
+"xianggang"的分词结果:
 array(2) {
   [0]=>
   string(12) "xi ang gang "
@@ -235,18 +235,18 @@ array(2) {
 ```php
 use \Yurun\Util\Chinese;
 $string3 = '中华人民共和国！恭喜發財！';
-echo '"', $string3, '"的简体转换：', PHP_EOL;
+echo '"', $string3, '"的简体转换:', PHP_EOL;
 var_dump(Chinese::toSimplified($string3));
-echo '"', $string3, '"的繁体转换：', PHP_EOL;
+echo '"', $string3, '"的繁体转换:', PHP_EOL;
 var_dump(Chinese::toTraditional($string3));
 /**
-输出结果：
-"中华人民共和国！恭喜發財！"的简体转换：
+输出结果:
+"中华人民共和国！恭喜發財！"的简体转换:
 array(1) {
   [0]=>
   string(39) "中华人民共和国！恭喜发财！"
 }
-"中华人民共和国！恭喜發財！"的繁体转换：
+"中华人民共和国！恭喜發財！"的繁体转换:
 array(1) {
   [0]=>
   string(39) "中華人民共和國！恭喜發財！"

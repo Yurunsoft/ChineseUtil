@@ -83,7 +83,6 @@ class PinyinSplit
 
 	private function extractPinyins($lastStr = '', $lastStrSpace = '', $index = 0)
 	{
-		// exit;
 		$result = '';
 		$stackLength = count($this->stacks);
 		$bigHasResult = false;
