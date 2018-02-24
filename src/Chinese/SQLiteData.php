@@ -19,7 +19,6 @@ class SQLiteData
 			{
 				$path = dirname(dirname(__DIR__)) . '/data/chineseData.sqlite';
 			}
-			var_dump($path);
 			static::$pdo = new \PDO('sqlite:' . $path, '', '');
 		}
 	}
