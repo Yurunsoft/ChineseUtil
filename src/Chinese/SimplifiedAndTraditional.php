@@ -6,13 +6,19 @@ use \Yurun\Util\Chinese;
 class SimplifiedAndTraditional
 {
 	/**
+	 * 拼音处理器
+	 * @var \Yurun\Util\Chinese\Driver\SimplifiedTraditional\BaseInterface
+	 */
+	public static $handler;
+
+	/**
 	 * 繁体转简体
 	 * @param string $string
 	 * @return array
 	 */
 	public static function toSimplified($string)
 	{
-		return static::parseResult(static::getResult($string, Chinese::INDEX_SC));
+		return static::getHandler()->toSimplified($string);
 	}
 
 	/**
@@ -22,61 +28,20 @@ class SimplifiedAndTraditional
 	 */
 	public static function toTraditional($string)
 	{
-		return static::parseResult(static::getResult($string, Chinese::INDEX_TC));
+		return static::getHandler()->toTraditional($string);
 	}
 
 	/**
-	 * 把字符串转为数组结果
-	 * @param string $string
-	 * @return array
+	 * 获取拼音处理器
+	 * @return \Yurun\Util\Chinese\Driver\SimplifiedTraditional\BaseInterface
 	 */
-	public static function getResult($string, $key)
+	protected static function getHandler()
 	{
-		$len = mb_strlen($string, 'UTF-8');
-		$list = array();
-		for($i = 0; $i < $len; ++$i)
+		if(null === static::$handler)
 		{
-			$word = mb_substr($string, $i, 1, 'UTF-8');
-			if(isset(Chinese::$chineseData['chars'][$word][$key][0]))
-			{
-				$list[] = Chinese::$chineseData['chars'][$word][$key];
-			}
-			else
-			{
-				$list[] = array(
-					$word
-				);
-			}
+			$className = '\Yurun\Util\Chinese\Driver\SimplifiedTraditional\\' . Chinese::getMode();
+			static::$handler = new $className;
 		}
-		return $list;
-	}
-
-	/**
-	 * 处理结果
-	 * @param array $list
-	 * @return void
-	 */
-	public static function parseResult($list)
-	{
-		$strings = array('');
-		foreach($list as $pinyins)
-		{
-			$count = count($pinyins);
-			$oldResultCount = count($strings);
-			$oldResult = $strings;
-			for($i=0;$i<$count - 1;++$i)
-			{
-				$strings = array_merge($strings, $oldResult);
-			}
-			foreach($pinyins as $index => $pinyin)
-			{
-				for($i = 0; $i < $oldResultCount; ++$i)
-				{
-					$j = $index * $oldResultCount + $i;
-					$strings[$j] .= $pinyin;
-				}
-			}
-		}
-		return $strings;
+		return static::$handler;
 	}
 }

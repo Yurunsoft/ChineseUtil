@@ -12,6 +12,26 @@ class PinyinSplit
 	public $lengthPos = array();
 	public $pinyins = array();
 
+	public function __construct()
+	{
+		// 拼音分词数据加载
+		if(!isset(Chinese::$option['pinyinSplitData']))
+		{
+			if(!empty(Chinese::$option['pinyinSplitData']))
+			{
+				Chinese::$chineseData['pinyin'] = Chinese::$option['pinyinSplitData'];
+			}
+			else if(empty(Chinese::$option['pinyinSplitDataPath']))
+			{
+				Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(dirname(dirname(__DIR__)) . '/data/pinyinSplitData.json'), true);
+			}
+			else
+			{
+				Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(Chinese::$option['pinyinSplitDataPath']), true);
+			}
+		}
+	}
+
 	public static function split($text)
 	{
 		$ins = new static;

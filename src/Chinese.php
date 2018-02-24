@@ -2,35 +2,12 @@
 namespace Yurun\Util;
 
 use \Yurun\Util\Chinese\Pinyin;
+use Yurun\Util\Chinese\JSONIndex;
 use \Yurun\Util\Chinese\PinyinSplit;
 use \Yurun\Util\Chinese\SimplifiedAndTraditional;
 
 class Chinese
 {
-	/**
-	 * 数据索引-拼音
-	 */
-	const INDEX_PINYIN = 0;
-
-	/**
-	 * 数据索引-对应的简体字
-	 */
-	const INDEX_SC = 1;
-
-	/**
-	 * 数据索引-对应的繁体字
-	 */
-	const INDEX_TC = 2;
-
-	/**
-	 * 数据索引-是否为简体字
-	 */
-	const INDEX_IS_SC = 3;
-
-	/**
-	 * 数据索引-是否为繁体字
-	 */
-	const INDEX_IS_TC = 4;
 
 	/**
 	 * 是否已初始化
@@ -39,29 +16,38 @@ class Chinese
 	public static $isInited = false;
 
 	/**
+	 * 配置数据
+	 * @var array
+	 */
+	public static $option = [];
+
+	/**
 	 * 中文数据
 	 * @var array
 	 */
-	public static $chineseData;
+	public static $chineseData = [];
+
+	private static $mode;
 
 	/**
 	 * 初始化
 	 * @param array $option 初始化配置
 	 * @return void
 	 */
-	public static function init($option = null)
+	public static function init($option = [])
 	{
-		if(!empty($option['chineseData']))
+		static::$option = $option;
+		if(null === static::$mode)
 		{
-			static::$chineseData = $option['chineseData'];
-		}
-		else if(empty($option['dataPath']))
-		{
-			static::$chineseData = json_decode(file_get_contents(dirname(__DIR__) . '/data/chineseData.json'), true);
-		}
-		else
-		{
-			static::$chineseData = json_decode(file_get_contents($option['dataPath']), true);
+			// 优先使用通用模式，如果环境不支持 PDO 将采用兼容模式。
+			if(extension_loaded('pdo_sqlite'))
+			{
+				static::setMode('SQLite');
+			}
+			else
+			{
+				static::setMode('JSON');
+			}
 		}
 		static::$isInited = true;
 	}
@@ -89,10 +75,6 @@ class Chinese
 	 */
 	public static function splitPinyin($string)
 	{
-		if(!static::$isInited)
-		{
-			static::init();
-		}
 		return PinyinSplit::split($string);
 	}
 
@@ -124,39 +106,18 @@ class Chinese
 		return SimplifiedAndTraditional::toTraditional($string);
 	}
 
-	/**
-	 * 返回中文数据信息
-	 * @return array
-	 */
-	public static function info()
+	public static function setMode($mode)
 	{
-		if(!static::$isInited)
+		if(static::$isInited)
 		{
-			static::init();
+			throw new \Exception('一经初始化，无法切换模式');
 		}
-		$result = [];
-		$result['chars'] = count(static::$chineseData['chars']);
-		$scCount = 0;
-		$tcCount = 0;
-		$otherCount = 0;
-		foreach(static::$chineseData['chars'] as $item)
-		{
-			if($item[static::INDEX_IS_SC] === $item[static::INDEX_IS_TC])
-			{
-				++$otherCount;
-			}
-			else if($item[static::INDEX_IS_SC])
-			{
-				++$scCount;
-			}
-			else
-			{
-				++$tcCount;
-			}
-		}
-		$result['scCount'] = $scCount;
-		$result['tcCount'] = $tcCount;
-		$result['otherCount'] = $otherCount;
-		return $result;
+		static::$mode = $mode;
 	}
+
+	public static function getMode()
+	{
+		return static::$mode;
+	}
+	
 }

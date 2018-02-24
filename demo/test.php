@@ -2,12 +2,20 @@
 namespace Yurun\Util;
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 use \Yurun\Util\Chinese\Pinyin;
-// 信息
+
 $mem1 = memory_get_usage();
-$info = Chinese::info();
-$mem2 = memory_get_usage();
-echo '总共收录 ', $info['chars'], ' 个汉字，包括：', $info['scCount'], ' 个简体字，', $info['tcCount'], ' 个繁体字，', $info['otherCount'], ' 个其它汉字。', PHP_EOL;
-echo '加载数据字典前内存占用：', $mem1, '，加载数据字典后内存占用：', $mem2, PHP_EOL;
+
+// 设为性能模式
+// Chinese::setMode('Memory');
+// 性能模式占用内存大，如果提示内存不足，请扩大内存限制
+// ini_set('memory_limit','256M');
+
+// 设为通用模式，支持 PDO_SQLITE 的情况下为默认
+// Chinese::setMode('SQLite');
+
+// 设为兼容模式，不支持 PDO_SQLITE 的情况下为默认
+// Chinese::setMode('JSON');
+
 // 汉字转拼音
 $string = '恭喜發財！把我翻译成拼音看下？';
 echo $string, PHP_EOL;
@@ -33,3 +41,6 @@ echo '"', $string3, '"的简体转换：', PHP_EOL;
 var_dump(Chinese::toSimplified($string3));
 echo '"', $string3, '"的繁体转换：', PHP_EOL;
 var_dump(Chinese::toTraditional($string3));
+// 
+echo '当前模式:', Chinese::getMode(), PHP_EOL;
+echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), PHP_EOL;
