@@ -3,6 +3,7 @@ namespace Yurun\Util;
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 use \Yurun\Util\Chinese\Pinyin;
 
+$time = microtime(true);
 $mem1 = memory_get_usage();
 
 // 设为性能模式
@@ -44,3 +45,4 @@ var_dump(Chinese::toTraditional($string3));
 // 
 echo '当前模式:', Chinese::getMode(), PHP_EOL;
 echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), PHP_EOL;
+echo '耗时:', microtime(true) - $time, 's', PHP_EOL;
