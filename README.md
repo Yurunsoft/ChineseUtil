@@ -81,6 +81,7 @@ Chinese::setMode('JSON');
 
 ```php
 use \Yurun\Util\Chinese;
+use \Yurun\Util\Chinese\Pinyin;
 $string = '恭喜發財！';
 echo $string, PHP_EOL;
 
