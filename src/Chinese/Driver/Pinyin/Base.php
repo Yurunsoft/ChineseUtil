@@ -15,9 +15,20 @@ abstract class Base implements BaseInterface
 		return $this->parseResult($this->getResult($string), $mode, $wordSplit);
 	}
 
-	public function superUnique($array)
+	/**
+	 * 结果去重
+	 *
+	 * @param array $array
+	 * @return array
+	 */
+	protected function uniqueResult($array)
 	{
-		return array_map('unserialize', array_unique(array_map('serialize', $array)));
+		$newArray = array_map('unserialize', array_unique(array_map('serialize', $array)));
+		if($array !== $newArray)
+		{
+			$newArray = array_values($newArray);
+		}
+		return $newArray;
 	}
 
 	/**

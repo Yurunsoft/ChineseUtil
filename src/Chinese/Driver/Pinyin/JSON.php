@@ -98,15 +98,15 @@ class JSON extends Base
 		
 		if($isPinyin)
 		{
-			$result['pinyin'] = $this->superUnique($result['pinyin']);
+			$result['pinyin'] = $this->uniqueResult($result['pinyin']);
 		}
 		if($isPinyinSoundNumber)
 		{
-			$result['pinyinSoundNumber'] = $this->superUnique($result['pinyinSoundNumber']);
+			$result['pinyinSoundNumber'] = $this->uniqueResult($result['pinyinSoundNumber']);
 		}
 		if($isPinyinFirst)
 		{
-			$result['pinyinFirst'] = $this->superUnique($result['pinyinFirst']);
+			$result['pinyinFirst'] = $this->uniqueResult($result['pinyinFirst']);
 		}
 
 		return $result;
