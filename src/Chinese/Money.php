@@ -69,10 +69,11 @@ abstract class Money
                 if(false === $unitKey)
                 {
                     --$i;
+                    $decimal .= $key;
                 }
                 else
                 {
-                    $decimal = bcadd($decimal, bcmul($key, bcpow(10, -($unitKey)), $scale), $scale);
+                    $decimal = bcadd($decimal, bcmul($key, bcpow(10, -($unitKey), $scale), $scale), $scale);
                 }
             }
             else if(false === $key)
@@ -109,11 +110,11 @@ abstract class Money
                 {
                     if($key < $lastKey)
                     {
-                        $number = bcadd($number, bcmul(bcadd($partNumber, $lastNum), $tNumber));
+                        $number = bcadd($number, bcmul(bcadd($partNumber, $lastNum, $scale), $tNumber, $scale), $scale);
                     }
                     else
                     {
-                        $number = bcmul(bcadd($number, bcadd($partNumber, $lastNum)), $tNumber);
+                        $number = bcmul(bcadd($number, bcadd($partNumber, $lastNum, $scale), $scale), $tNumber, $scale);
                     }
                     $partNumber = 0;
                     $lastNum = null;
@@ -121,7 +122,7 @@ abstract class Money
                 }
                 else
                 {
-                    $partNumber = bcadd($partNumber, bcmul($lastNum, $tNumber));
+                    $partNumber = bcadd($partNumber, bcmul($lastNum, $tNumber, $scale), $scale);
                     $lastNum = 0;
                 }
 
@@ -131,7 +132,7 @@ abstract class Money
                 $lastNum = $key;
             }
         }
-        $result = bcmul(bcadd(bcadd($number, bcadd($partNumber, $lastNum)), $decimal, $scale), $pom, $scale);
+        $result = bcmul(bcadd(bcadd($number, bcadd($partNumber, $lastNum, $scale), $scale), $decimal, $scale), $pom, $scale);
         if(false === strpos($result, '.'))
         {
             return $result;
