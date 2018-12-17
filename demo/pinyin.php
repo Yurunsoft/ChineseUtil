@@ -1,4 +1,7 @@
 <?php
+/**
+ * 汉字转拼音示例
+ */
 namespace Yurun\Util;
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 use \Yurun\Util\Chinese\Pinyin;
@@ -18,7 +21,7 @@ $mem1 = memory_get_usage();
 // Chinese::setMode('JSON');
 
 // 汉字转拼音
-$string = '恭喜發財！把我翻译成拼音看下？';
+$string = '恭喜發財！把我翻译成拼音看下？123';
 echo $string, PHP_EOL;
 echo '所有结果:', PHP_EOL;
 var_dump(Chinese::toPinyin($string));
@@ -32,17 +35,9 @@ echo '读音数字:', PHP_EOL;
 var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER));
 echo '自选返回格式 + 以文本格式返回 + 自定义分隔符:', PHP_EOL;
 var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER, ' '));
-// 拼音分词
-$string2 = 'xianggang';
-echo '"', $string2, '"的分词结果：', PHP_EOL;
-var_dump(Chinese::splitPinyin($string2));
-// 简繁互转
-$string3 = '中华人民共和国！恭喜發財！';
-echo '"', $string3, '"的简体转换：', PHP_EOL;
-var_dump(Chinese::toSimplified($string3));
-echo '"', $string3, '"的繁体转换：', PHP_EOL;
-var_dump(Chinese::toTraditional($string3));
-// 
+echo '不分割无拼音字符:', PHP_EOL;
+var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN, ' ', false));
+
 echo '当前模式:', Chinese::getMode(), PHP_EOL;
 echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), PHP_EOL;
 echo '耗时:', microtime(true) - $time, 's', PHP_EOL;

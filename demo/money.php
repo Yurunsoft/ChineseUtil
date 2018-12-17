@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * 中文金额转换示例
+ */
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use Yurun\Util\Chinese\Money;
