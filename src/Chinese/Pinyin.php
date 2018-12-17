@@ -53,11 +53,12 @@ class Pinyin
      * @param string $string
      * @param int $mode
      * @param string $wordSplit
+     * @param boolean $splitNotPinyinChar 分割无拼音字符。如果为true，如123结果分割为['1','2','3']；如果为false，如123结果分割为['123']
      * @return array
      */
-    public static function toText($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = ' ')
+    public static function toText($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = ' ', $splitNotPinyinChar = true)
     {
-        return static::getHandler()->convert($string, $mode, $wordSplit);
+        return static::getHandler()->convert($string, $mode, $wordSplit, $splitNotPinyinChar);
     }
 
     /**

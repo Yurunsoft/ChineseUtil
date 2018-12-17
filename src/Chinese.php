@@ -57,15 +57,16 @@ class Chinese
      * @param string $string
      * @param int $mode
      * @param string $wordSplit
+     * @param boolean $splitNotPinyinChar 分割无拼音字符。如果为true，如123结果分割为['1','2','3']；如果为false，如123结果分割为['123']
      * @return array
      */
-    public static function toPinyin($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = null)
+    public static function toPinyin($string, $mode = Pinyin::CONVERT_MODE_FULL, $wordSplit = null, $splitNotPinyinChar = true)
     {
         if(!static::$isInited)
         {
             static::init();
         }
-        return Pinyin::toText($string, $mode, $wordSplit);
+        return Pinyin::toText($string, $mode, $wordSplit, $splitNotPinyinChar);
     }
 
     /**

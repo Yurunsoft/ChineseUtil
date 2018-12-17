@@ -193,26 +193,48 @@ class SQLite extends Base
     /**
      * 把字符串转为拼音数组结果
      * @param string $string
+     * @param boolean $splitNotPinyinChar 分割无拼音字符。如果为true，如123结果分割为['1','2','3']；如果为false，如123结果分割为['123']
      * @return array
      */
-    protected function getResult($string)
+    protected function getResult($string, $splitNotPinyinChar = true)
     {
         $len = mb_strlen($string, 'UTF-8');
         $list = array();
+        $noResultItem = null;
         for($i = 0; $i < $len; ++$i)
         {
             $word = mb_substr($string, $i, 1, 'UTF-8');
             $data = SQLiteData::getData($word);
             if(isset($data['char']))
             {
+                if(!$splitNotPinyinChar && null !== $noResultItem)
+                {
+                    $list[] = $noResultItem;
+                    $noResultItem = null;
+                }
                 $list[] = $data;
             }
             else
             {
-                $list[] = array(
-                    'pinyin' => [$word]
-                );
+                if($splitNotPinyinChar)
+                {
+                    $list[] = array(
+                        'pinyin' => [$word]
+                    );
+                }
+                else
+                {
+                    if(null === $noResultItem)
+                    {
+                        $noResultItem['pinyin'][0] = '';
+                    }
+                    $noResultItem['pinyin'][0] .= $word;
+                }
             }
+        }
+        if(!$splitNotPinyinChar && null !== $noResultItem)
+        {
+            $list[] = $noResultItem;
         }
         return $list;
     }
