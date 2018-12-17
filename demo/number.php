@@ -12,7 +12,7 @@ function test($number)
         'tenMin'    =>  true, // “一十二” => “十二”
     ]);
     $afterNumber = Number::toNumber($chinese);
-    echo $number, '=>', $chinese, '=>', $afterNumber, '=>', 0 === bccomp($number, $afterNumber) ? 'true' : 'false', PHP_EOL;
+    echo $number, '=>', $chinese, '=>', $afterNumber, '=>', 0 === bccomp($number, $afterNumber, 20) ? 'true' : 'false', PHP_EOL;
 }
 
 /**

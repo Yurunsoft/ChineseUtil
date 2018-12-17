@@ -82,7 +82,7 @@ Chinese::setMode('JSON');
 ```php
 use \Yurun\Util\Chinese;
 use \Yurun\Util\Chinese\Pinyin;
-$string = '恭喜發財！';
+$string = '恭喜發財！123';
 echo $string, PHP_EOL;
 
 echo '全拼:', PHP_EOL;
@@ -102,164 +102,11 @@ var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVER
 
 echo '所有结果:', PHP_EOL;
 var_dump(Chinese::toPinyin($string));
-/**
-所有结果:
-array(4) {
-  ["pinyin"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(4) "gong"
-      [1]=>
-      string(2) "xi"
-      [2]=>
-      string(2) "fa"
-      [3]=>
-      string(3) "cai"
-      [4]=>
-      string(3) "！"
-    }
-  }
-  ["pinyinSoundNumber"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(5) "gong1"
-      [1]=>
-      string(3) "xi3"
-      [2]=>
-      string(3) "fa1"
-      [3]=>
-      string(4) "cai2"
-      [4]=>
-      string(3) "！"
-    }
-  }
-  ["pinyinFirst"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(1) "g"
-      [1]=>
-      string(1) "x"
-      [2]=>
-      string(1) "f"
-      [3]=>
-      string(1) "c"
-      [4]=>
-      string(3) "！"
-    }
-  }
-  ["pinyinSound"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(5) "gōng"
-      [1]=>
-      string(3) "xǐ"
-      [2]=>
-      string(3) "fā"
-      [3]=>
-      string(4) "cái"
-      [4]=>
-      string(3) "！"
-    }
-  }
-}
-全拼:
-array(1) {
-  ["pinyin"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(4) "gong"
-      [1]=>
-      string(2) "xi"
-      [2]=>
-      string(2) "fa"
-      [3]=>
-      string(3) "cai"
-      [4]=>
-      string(3) "！"
-    }
-  }
-}
-首字母:
-array(1) {
-  ["pinyinFirst"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(1) "g"
-      [1]=>
-      string(1) "x"
-      [2]=>
-      string(1) "f"
-      [3]=>
-      string(1) "c"
-      [4]=>
-      string(3) "！"
-    }
-  }
-}
-读音:
-array(1) {
-  ["pinyinSound"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(5) "gōng"
-      [1]=>
-      string(3) "xǐ"
-      [2]=>
-      string(3) "fā"
-      [3]=>
-      string(4) "cái"
-      [4]=>
-      string(3) "！"
-    }
-  }
-}
-读音数字:
-array(1) {
-  ["pinyinSoundNumber"]=>
-  array(1) {
-    [0]=>
-    array(5) {
-      [0]=>
-      string(5) "gong1"
-      [1]=>
-      string(3) "xi3"
-      [2]=>
-      string(3) "fa1"
-      [3]=>
-      string(4) "cai2"
-      [4]=>
-      string(3) "！"
-    }
-  }
-}
-自选返回格式 + 以文本格式返回 + 自定义分隔符:
-array(2) {
-  ["pinyin"]=>
-  array(1) {
-    [0]=>
-    string(18) "gong xi fa cai ！"
-  }
-  ["pinyinSoundNumber"]=>
-  array(1) {
-    [0]=>
-    string(22) "gong1 xi3 fa1 cai2 ！"
-  }
-}
- * /
+
+echo '不分割无拼音字符:', PHP_EOL;
+var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN, ' ', false));
+
+// 结果太长，请自行运行代码查看
 ```
 
 ### 拼音分词
@@ -303,4 +150,50 @@ array(1) {
   string(39) "中華人民共和國！恭喜發財！"
 }
  * /
+```
+
+### 数字转换
+
+```php
+use Yurun\Util\Chinese\Number;
+function test($number)
+{
+    $chinese = Number::toChinese($number, [
+        'tenMin'    =>  true, // “一十二” => “十二”
+    ]);
+    $afterNumber = Number::toNumber($chinese);
+    echo $number, '=>', $chinese, '=>', $afterNumber, '=>', 0 === bccomp($number, $afterNumber, 20) ? 'true' : 'false', PHP_EOL;
+}
+
+test(1.234);
+test(-1234567890.666);
+test(pi());
+/**
+输出结果:
+1.234=>一点二三四=>1.234=>true
+-1234567890.666=>负十二亿三千四百五十六万七千八百九十点六六六=>-1234567890.666=>true
+3.1415926535898=>三点一四一五九二六五三五八九八=>3.1415926535898=>true
+ */
+```
+
+### 金额数字转换
+
+```php
+use Yurun\Util\Chinese\Money;
+function test($number)
+{
+    $chinese = Money::toChinese($number, [
+        'tenMin'    =>  true, // “一十二” => “十二”
+    ]);
+    $afterMoney = Money::toNumber($chinese);
+    echo $number, '=>', $chinese, '=>', $afterMoney, '=>', 0 === bccomp($number, $afterMoney) ? 'true' : 'false', PHP_EOL;
+}
+
+test(1.234);
+test(-1234567890.666);
+/**
+输出结果:
+1.234=>壹圆贰角叁分肆厘=>1.234=>true
+-1234567890.666=>负壹拾贰亿叁仟肆佰伍拾陆万柒仟捌佰玖拾圆陆角陆分陆厘=>-1234567890.666=>true
+ */
 ```

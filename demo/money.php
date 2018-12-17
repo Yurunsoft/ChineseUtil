@@ -12,7 +12,7 @@ function test($number)
         'tenMin'    =>  true, // “一十二” => “十二”
     ]);
     $afterMoney = Money::toNumber($chinese);
-    echo $number, '=>', $chinese, '=>', $afterMoney, '=>', 0 === bccomp($number, $afterMoney) ? 'true' : 'false', PHP_EOL;
+    echo $number, '=>', $chinese, '=>', $afterMoney, '=>', 0 === bccomp($number, $afterMoney, 4) ? 'true' : 'false', PHP_EOL;
 }
 
 /**
@@ -44,9 +44,6 @@ function digital($min, $max)
 {
     return text('0123456789', $min, $max);
 }
-
-// test(79151912594915);
-// exit;
 
 $count = 10;
 echo '整数：', PHP_EOL;
