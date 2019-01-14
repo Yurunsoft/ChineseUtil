@@ -29,19 +29,19 @@ class Memory extends Base
         $result = [];
         if($isPinyin)
         {
-            $result['pinyin'] = [''];
+            $result['pinyin'] = [[]];
         }
         if($isPinyinSound)
         {
-            $result['pinyinSound'] = [''];
+            $result['pinyinSound'] = [[]];
         }
         if($isPinyinSoundNumber)
         {
-            $result['pinyinSoundNumber'] = [''];
+            $result['pinyinSoundNumber'] = [[]];
         }
         if($isPinyinFirst)
         {
-            $result['pinyinFirst'] = [''];
+            $result['pinyinFirst'] = [[]];
         }
         $oldResultCount = null;
         foreach($list as $item)
