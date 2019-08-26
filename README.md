@@ -20,7 +20,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 ### 性能模式 (Memory)
 
-使用 SQLite 作为数据载体，一次性加载所有数据到变量，内存占用高(80 MB)，性能最佳。
+使用 SQLite 作为数据载体，一次性加载所有数据到变量，内存占用高(80+ MB)，性能最佳。
 
 适合用于运行 Cli 任务。
 
@@ -28,7 +28,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 ### 通用模式 (SQLite)
 
-使用 SQLite 作为数据载体，每次查询都通过 SQL 查询，内存占用低(600+ KB)，性能中等。
+使用 SQLite 作为数据载体，每次查询都通过 SQL 查询，内存占用低(100-200 KB)，性能中等。
 
 适合用于大部分场景。
 
@@ -36,7 +36,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 ### 兼容模式 (JSON)
 
-使用精简过的 JSON 数据作为数据载体，一次性加载所有数据到变量，内存占用中(28 MB)，性能差。
+使用精简过的 JSON 数据作为数据载体，一次性加载所有数据到变量，内存占用中(30+ MB)，性能差。
 
 > 内存占用量以实际为准，根据版本、扩展等环境的不同，占用的内存容量不一样，上述值为我电脑上的情况，仅供参考。
 
