@@ -2,13 +2,11 @@
 namespace Yurun\Util;
 
 use \Yurun\Util\Chinese\Pinyin;
-use Yurun\Util\Chinese\JSONIndex;
 use \Yurun\Util\Chinese\PinyinSplit;
 use \Yurun\Util\Chinese\SimplifiedAndTraditional;
 
 class Chinese
 {
-
     /**
      * 是否已初始化
      * @var boolean
@@ -27,6 +25,11 @@ class Chinese
      */
     public static $chineseData = [];
 
+    /**
+     * 模式
+     *
+     * @var string
+     */
     private static $mode;
 
     /**
@@ -107,15 +110,27 @@ class Chinese
         return SimplifiedAndTraditional::toTraditional($string);
     }
 
+    /**
+     * 设置模式
+     *
+     * @param string $mode
+     * @return void
+     */
     public static function setMode($mode)
     {
-        if(static::$isInited)
+        if(static::$mode !== $mode)
         {
-            throw new \Exception('一经初始化，无法切换模式');
+            static::$mode = $mode;
+            static::$isInited = false;
+            static::$chineseData = [];
         }
-        static::$mode = $mode;
     }
 
+    /**
+     * 获取模式
+     *
+     * @return string
+     */
     public static function getMode()
     {
         return static::$mode;

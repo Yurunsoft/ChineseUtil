@@ -9,17 +9,17 @@ trait JSONInit
     {
         if(!isset(Chinese::$chineseData['chars']))
         {
-            if(!empty($option['charsData']))
+            if(!empty(Chinese::$option['charsData']))
             {
-                Chinese::$chineseData['chars'] = $option['charsData'];
+                Chinese::$chineseData['chars'] = Chinese::$option['charsData'];
             }
-            else if(empty($option['charsDataPath']))
+            else if(empty(Chinese::$option['charsDataPath']))
             {
                 Chinese::$chineseData['chars'] = json_decode(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/data/charsData.json'), true);
             }
             else
             {
-                Chinese::$chineseData['chars'] = json_decode(file_get_contents($option['charsDataPath']), true);
+                Chinese::$chineseData['chars'] = json_decode(file_get_contents(Chinese::$option['charsDataPath']), true);
             }
         }
     }
@@ -28,17 +28,17 @@ trait JSONInit
     {
         if(!isset(Chinese::$chineseData['pinyinSound']))
         {
-            if(!empty($option['pinyinSoundData']))
+            if(!empty(Chinese::$option['pinyinSoundData']))
             {
-                Chinese::$chineseData['pinyinSound'] = $option['pinyinSoundData'];
+                Chinese::$chineseData['pinyinSound'] = Chinese::$option['pinyinSoundData'];
             }
-            else if(empty($option['pinyinSoundDataPath']))
+            else if(empty(Chinese::$option['pinyinSoundDataPath']))
             {
                 Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/data/pinyinSound.json'), true);
             }
             else
             {
-                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents($option['pinyinSoundDataPath']), true);
+                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(Chinese::$option['pinyinSoundDataPath']), true);
             }
         }
     }

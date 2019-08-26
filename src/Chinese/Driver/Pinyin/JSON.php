@@ -48,12 +48,17 @@ class JSON extends Base
         }
 
         $isPinyin = (($mode & Pinyin::CONVERT_MODE_PINYIN) === Pinyin::CONVERT_MODE_PINYIN);
+        $isPinyinSound = (($mode & Pinyin::CONVERT_MODE_PINYIN_SOUND) === Pinyin::CONVERT_MODE_PINYIN_SOUND);
         $isPinyinSoundNumber = (($mode & Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER) === Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER);
         $isPinyinFirst = (($mode & Pinyin::CONVERT_MODE_PINYIN_FIRST) === Pinyin::CONVERT_MODE_PINYIN_FIRST);
         $result = [];
         if($isPinyin)
         {
             $result['pinyin'] = [];
+        }
+        if($isPinyinSound)
+        {
+            $result['pinyinSound'] = [[]];
         }
         if($isPinyinSoundNumber)
         {
@@ -226,21 +231,14 @@ class JSON extends Base
             }
             if($isPinyinFirst)
             {
-                if(isset($pinyin))
-                {
-                    $result['pinyinFirst'][] = mb_substr($pinyin, 0, 1);
-                }
-                else
-                {
-                    $result['pinyinFirst'][] = mb_substr(preg_replace_callback(
-                        $pattern,
-                        function ($matches){
-                            return Chinese::$chineseData['pinyinSound'][$matches[0]]['ab'];
-                        },
-                        $pinyinSoundItem,
-                        1
-                    ), 0, 1);
-                }
+                $result['pinyinFirst'][] = mb_substr(preg_replace_callback(
+                    $pattern,
+                    function ($matches){
+                        return Chinese::$chineseData['pinyinSound'][$matches[0]]['ab'];
+                    },
+                    $pinyinSoundItem,
+                    1
+                ), 0, 1);
             }
         }
         

@@ -220,7 +220,10 @@ class Memory extends Base
                 if($splitNotPinyinChar)
                 {
                     $list[] = array(
-                        'pinyin' => [$word]
+                        'pinyin'            => [$word],
+                        'pinyinSound'       => [$word],
+                        'pinyinSound'       => [$word],
+                        'pinyinSoundNumber' => [$word],
                     );
                 }
                 else
