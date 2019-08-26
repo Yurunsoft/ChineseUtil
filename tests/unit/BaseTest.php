@@ -121,7 +121,8 @@ array(4) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -212,7 +213,8 @@ array(4) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -250,7 +252,8 @@ array(1) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -288,7 +291,8 @@ array(1) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -326,7 +330,8 @@ array(1) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -364,7 +369,8 @@ array(1) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -390,7 +396,8 @@ array(2) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -411,7 +418,8 @@ array(1) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
@@ -432,7 +440,8 @@ array(1) {
   }
 }
 
-EXPECTED, ob_get_clean());
+EXPECTED
+        , ob_get_clean());
     }
 
     /**
