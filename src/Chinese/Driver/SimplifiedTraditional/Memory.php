@@ -26,9 +26,9 @@ class Memory extends Base
         for($i = 0; $i < $len; ++$i)
         {
             $word = mb_substr($string, $i, 1, 'UTF-8');
-            if(isset(Chinese::$chineseData['chars'][$key][0]))
+            if(isset(Chinese::$chineseData['chars'][$word][$key]) && [] !== Chinese::$chineseData['chars'][$word][$key])
             {
-                $list[] = Chinese::$chineseData['chars'][$key];
+                $list[] = Chinese::$chineseData['chars'][$word][$key];
             }
             else
             {

@@ -21,12 +21,13 @@ class JSON extends Base
     {
         $len = mb_strlen($string, 'UTF-8');
         $list = array();
+        $index = constant('\Yurun\Util\Chinese\JSONIndex::INDEX_' . strtoupper($key));
         for($i = 0; $i < $len; ++$i)
         {
             $word = mb_substr($string, $i, 1, 'UTF-8');
-            if(isset(Chinese::$chineseData['chars'][$key][0]))
+            if(isset(Chinese::$chineseData['chars'][$word][$index]) && '' !== Chinese::$chineseData['chars'][$word][$index])
             {
-                $list[] = Chinese::$chineseData['chars'][$key];
+                $list[] = explode(',', Chinese::$chineseData['chars'][$word][$index]);
             }
             else
             {
