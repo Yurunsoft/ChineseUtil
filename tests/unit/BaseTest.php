@@ -451,7 +451,7 @@ EXPECTED
      */
     public function testPinyinSplit()
     {
-        $this->assertEqualsCanonicalizing([
+        $this->assertEquals([
             'xi ang gang ',
             'xiang gang ',
         ], Chinese::splitPinyin('xianggang'));
@@ -466,8 +466,8 @@ EXPECTED
     {
         $simplified = '中华人民共和国！恭喜发财！';
         $traditional = '中華人民共和國！恭喜發財！';
-        $this->assertEqualsCanonicalizing([$traditional, '中華人民共和國！恭喜髮財！'], Chinese::toTraditional($simplified));
-        $this->assertEqualsCanonicalizing([$simplified], Chinese::toSimplified($traditional));
+        $this->assertEquals([$traditional, '中華人民共和國！恭喜髮財！'], Chinese::toTraditional($simplified));
+        $this->assertEquals([$simplified], Chinese::toSimplified($traditional));
     }
 
 }
