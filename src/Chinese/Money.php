@@ -262,7 +262,7 @@ abstract class Money
                 }
                 else if('0' != $item)
                 {
-                    $result .= isset(static::$unitMap[$index + 1]) ? static::$unitMap[$index + 1] : str_repeat(static::$unitMap[3], $index - 3);
+                    $result .= isset(static::$unitMap[$index + 1]) ? static::$unitMap[$index + 1] : str_repeat(static::$unitMap[3], max($index - 3, 0));
                 }
             }
             else

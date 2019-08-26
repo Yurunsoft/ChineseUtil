@@ -39,7 +39,6 @@ abstract class Number
         $length = mb_strlen($text);
         $number = $partNumber = 0;
         $pom = 1; // 正数或负数，1或-1
-        $lastUnit = -1;
         $lastNum = 0;
         $isDecimal = false;
         $decimal = '';
