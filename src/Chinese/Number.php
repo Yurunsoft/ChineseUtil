@@ -169,7 +169,7 @@ abstract class Number
         $length = strlen($number);
         $firstItems = $length % 4;
         $leftStr = substr($number, $firstItems);
-        if('' === $leftStr)
+        if('' === $leftStr || false === $leftStr)
         {
             $split4 = [];
         }
