@@ -1,4 +1,5 @@
 # ChineseUtil
+
 PHP 中文工具类，支持汉字转拼音、拼音分词、简繁互转。
 
 PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified and traditional conversion
@@ -17,7 +18,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 ---
 
-#### 性能模式 (Memory)
+### 性能模式 (Memory)
 
 使用 SQLite 作为数据载体，一次性加载所有数据到变量，内存占用高(80 MB)，性能最佳。
 
@@ -25,7 +26,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 需要 PDO 和 PDO_SQLITE 扩展支持。
 
-#### 通用模式 (SQLite)
+### 通用模式 (SQLite)
 
 使用 SQLite 作为数据载体，每次查询都通过 SQL 查询，内存占用低(600+ KB)，性能中等。
 
@@ -33,7 +34,7 @@ PHP Chinese Tool class, support Chinese pinyin, pinyin participle, simplified an
 
 需要 PDO 和 PDO_SQLITE 扩展支持。
 
-#### 兼容模式 (JSON)
+### 兼容模式 (JSON)
 
 使用精简过的 JSON 数据作为数据载体，一次性加载所有数据到变量，内存占用中(28 MB)，性能差。
 
@@ -59,7 +60,6 @@ Chinese::setMode('JSON');
 ```
 
 无论何种模式，拼音分词所需数据总是从 JSON 数据中加载。
-
 
 ## 使用说明
 
