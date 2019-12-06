@@ -108,7 +108,7 @@ class PinyinSplit
         $bigHasResult = false;
         foreach($this->stacks[$index] as $item)
         {
-            if(!$item['isPinyin'])
+            if(true === $item || !$item['isPinyin'])
             {
                 continue;
             }
