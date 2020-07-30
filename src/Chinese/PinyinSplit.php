@@ -41,14 +41,14 @@ class PinyinSplit
     public function parse($text)
     {
         $this->results = array();
-        $this->pinyins = preg_split('/([^a-zA-Z]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE);
+        $this->pinyins = preg_split('/([^a-zA-Z]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         foreach($this->pinyins as $index => $pinyin)
         {
             $this->itemIndex = $index;
             $this->results[$index] = array();
             $this->parseItem($pinyin);
         }
-        $results = $this->parseResults(0, $result, $firstResult);
+        $results = $this->parseResults(0, $result);
         return $results;
     }
 
@@ -98,7 +98,7 @@ class PinyinSplit
         }
         $this->pinyinLength = $lengthIndex;
         // 提取所有拼音可能性
-        $result = $this->extractPinyins();
+        $this->extractPinyins();
     }
 
     private function extractPinyins($lastStr = '', $lastStrSpace = '', $index = 0)
@@ -147,9 +147,6 @@ class PinyinSplit
                 {
                     $result .= $item['pinyin'] . ' ' . $result2 . ' ';
                 }
-                else
-                {
-                }
             }
         }
         if(!$bigHasResult)
@@ -159,7 +156,7 @@ class PinyinSplit
         return $result;
     }
 
-    private function parseResults($index = 0, &$result, &$firstResult)
+    private function parseResults($index = 0, &$result)
     {
         $result = array();
         if(!isset($this->results[$index][0]))
@@ -167,7 +164,7 @@ class PinyinSplit
             $str = $this->splitStr($this->pinyins[$index]);
             if(isset($this->results[$index + 1]))
             {
-                $this->parseResults($index + 1, $tresult, $tfirstResult);
+                $this->parseResults($index + 1, $tresult);
                 if(isset($tresult[0]))
                 {
                     foreach($tresult as $item2)
@@ -187,12 +184,11 @@ class PinyinSplit
         }
         else
         {
-            foreach($this->results[$index] as $listIndex => $item)
+            foreach($this->results[$index] as $item)
             {
-                $firstStr = mb_substr($item, 0, 1);
                 if(isset($this->results[$index + 1]))
                 {
-                    $list = $this->parseResults($index + 1, $tresult, $tfirstResult);
+                    $this->parseResults($index + 1, $tresult);
                     if(isset($tresult[0]))
                     {
                         foreach($tresult as $item2)

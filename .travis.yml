@@ -1,8 +1,7 @@
-sudo: required
 language: php
-dist: trusty
+dist: bionic
 
-matrix:
+jobs:
   include:
   - php: '5.4'
     env: PHPUNIT_VERSION="4"

@@ -1,6 +1,8 @@
 <?php
 namespace Yurun\Util\Chinese\Driver\Pinyin;
 
+use Yurun\Util\Chinese\Pinyin;
+
 abstract class Base implements BaseInterface
 {
     /**
