@@ -14,19 +14,13 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": ">=4 <8"
+        "phpunit/phpunit": ">=4"
     },
     "scripts": {
         "test": "@php ./tests/phpunit -c ./tests/phpunit.xml",
         "install-test": [
             "@composer install",
             "@composer test"
-        ],
-        "test-no-dev": "phpunit -c ./tests/phpunit.xml",
-        "install-test-no-dev": [
-            "@php ./.travis/composer-no-phpunit.php",
-            "@composer install",
-            "@composer test-no-dev"
         ]
     }
 }
