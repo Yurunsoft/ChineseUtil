@@ -54,7 +54,6 @@ class PinyinSplit
             if(!isset($beginMaps[$index]))
             {
                 throw new \RuntimeException('Index value error');
-                break;
             }
             $first = true;
             foreach($beginMaps[$index] as $item)
@@ -127,7 +126,6 @@ class PinyinSplit
             $oddIsPinyin = preg_match('/^([^a-zA-Z]+)$/', $blocks[0]) > 0;
         }
 
-        $shengmuList = Chinese::$chineseData['pinyin']['shengmu'];
         $relationList = Chinese::$chineseData['pinyin']['relation'];
 
         $length = 0;
@@ -168,7 +166,6 @@ class PinyinSplit
                         {
                             $tempBlockResultItem2 = $tempBlockResultItem;
                             $tempBlockResultItem2['end'] = $end = $length + $i - 1;
-                            $tempBlockResultItem['flag'] = 'a';
                             unset($tempBlockResultItem2['relation']);
                             $beginMaps[$tempBlockResultItem2['begin']][] = $tempBlockResultItem2;
                             if($tempBlockResultItem2['isPinyin'])
@@ -184,7 +181,6 @@ class PinyinSplit
                     {
                         // 保存
                         $tempBlockResultItem['end'] = $end = $length + $i - 1;
-                        $tempBlockResultItem['flag'] = 'b';
                         unset($tempBlockResultItem['relation']);
                         $beginMaps[$tempBlockResultItem['begin']][] = $tempBlockResultItem;
                         if($tempBlockResultItem['isPinyin'])
@@ -207,7 +203,6 @@ class PinyinSplit
                 foreach($tempBlockResults as $tempBlockResultItem)
                 {
                     // 保存
-                    $tempBlockResultItem['flag'] = 'c';
                     $tempBlockResultItem['end'] = $end = $length + $i - 1;
                     unset($tempBlockResultItem['relation']);
                     $beginMaps[$tempBlockResultItem['begin']][] = $tempBlockResultItem;
