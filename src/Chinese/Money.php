@@ -194,7 +194,8 @@ abstract class Money
     {
         // 准备数据，分割为4个数字一组
         $length = strlen($number);
-        $firstItems = $length % 4;
+        // 同 % 4
+        $firstItems = $length & 3;
         $leftStr = substr($number, $firstItems);
         if('' === $leftStr || false === $leftStr)
         {
