@@ -5,13 +5,6 @@ use \Yurun\Util\Chinese;
 
 class PinyinSplit
 {
-    public $stacks = array();
-    public $results = array();
-    public $itemIndex = 0;
-    public $pinyinLength;
-    public $lengthPos = array();
-    public $pinyins = array();
-
     public function __construct()
     {
         // 拼音分词数据加载
@@ -32,219 +25,201 @@ class PinyinSplit
         }
     }
 
-    public static function split($text)
+    public static function split($text, $wordSplit = ' ')
     {
         $ins = new static;
-        return $ins->parse($text);
+        return $ins->parse($text, $wordSplit);
     }
 
-    public function parse($text)
+    public function parse($text, $wordSplit = ' ')
     {
-        $this->results = array();
-        $this->pinyins = preg_split('/([^a-zA-Z]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        foreach($this->pinyins as $index => $pinyin)
+        $this->parseBlock($text, $blocks, $beginMaps, $endMaps, $length);
+        if(!isset($beginMaps[0]))
         {
-            $this->itemIndex = $index;
-            $this->results[$index] = array();
-            $this->parseItem($pinyin);
+            throw new \RuntimeException('Data error');
         }
-        $results = $this->parseResults(0, $result);
-        return $results;
-    }
-
-    private function parseItem($text)
-    {
-        $this->stacks = array(array());
-        $length = strlen($text);
-        $lengthIndex = 0;
-        $this->pinyinStr = '';
-        $stackLength = 1;
-        // 处理成几列数据
-        for($i = 0; $i < $length; ++$i)
+        $result = [];
+        $stacks = [
+            [
+                'index'     =>  0,
+                'result'    =>  [[]],
+            ]
+        ];
+        while($stacks)
         {
-            if($this->charIsLetter($text[$i]))
+            $stack = array_pop($stacks);
+            $index = $stack['index'];
+            $originResult = json_decode(json_encode($stack['result'], true));
+            $tresult = &$stack['result'];
+            if(!isset($beginMaps[$index]))
             {
-                ++$lengthIndex;
-                $this->pinyinStr .= $text[$i];
+                throw new \RuntimeException('Index value error');
+                break;
             }
-            else
+            $first = true;
+            foreach($beginMaps[$index] as $item)
             {
-                continue;
-            }
-            for($j = 0; $j < $stackLength; ++$j)
-            {
-                if(isset($this->stacks[$j]['break']))
+                if(!$item['isPinyin'] && isset($endMaps[$index]))
+                {
+                    foreach($tresult as &$resultItem)
+                    {
+                        $resultItem = null;
+                    }
+                    unset($resultItem);
+                    continue;
+                }
+                $itemNextIndex = $item['end'] + 1;
+                if(!isset($beginMaps[$itemNextIndex]) && $itemNextIndex < $length - 1)
                 {
                     continue;
                 }
-                $str = (isset($this->stacks[$j][0]) ? $this->stacks[$j][count($this->stacks[$j]) - 1]['pinyin'] : '') . $text[$i];
-                $this->checkStack($str, $isIn, $isPinyin);
-                if($isIn)
+                $itemResult = [];
+                if($first)
                 {
-                    $this->stacks[$j][] = array('pinyin'=>$str, 'isPinyin'=>$isPinyin);
+                    foreach($tresult as &$resultItem)
+                    {
+                        $resultItem[] = $item['text'];
+                        $itemResult[] = &$resultItem;
+                    }
+                    unset($resultItem);
+                    $first = false;
                 }
                 else
                 {
-                    $this->stacks[$j]['break'] = true;
-                }
-            }
-            if($i > 0 && $text[$i] !== $this->stacks[$stackLength - 1][0] && in_array($text[$i], Chinese::$chineseData['pinyin']['shengmu']))
-            {
-                $this->checkStack($text[$i], $isIn, $isPinyin);
-                $this->stacks[] = array(array('pinyin'=>$text[$i], 'isPinyin'=>$isPinyin));
-                ++$stackLength;
-            }
-            $this->lengthPos[$lengthIndex] = $stackLength;
-        }
-        $this->pinyinLength = $lengthIndex;
-        // 提取所有拼音可能性
-        $this->extractPinyins();
-    }
-
-    private function extractPinyins($lastStr = '', $lastStrSpace = '', $index = 0)
-    {
-        $result = '';
-        $stackLength = count($this->stacks);
-        $bigHasResult = false;
-        foreach($this->stacks[$index] as $item)
-        {
-            if(true === $item || !$item['isPinyin'])
-            {
-                continue;
-            }
-            $result2 = '';
-            $str2 = $lastStrSpace . $item['pinyin'] . ' ';
-            $str = $lastStr . $item['pinyin'];
-            $len = strlen($str);
-            $nextChar = isset($this->stacks[$this->lengthPos[$len]][0]['pinyin']) ? $this->stacks[$this->lengthPos[$len]][0]['pinyin'] : null;
-            if($nextChar !== (isset($this->pinyinStr[$len]) ? $this->pinyinStr[$len] : ''))
-            {
-                if($len === $this->pinyinLength)
-                {
-                    $this->results[$this->itemIndex][] = $str2;
-                    $result .= $item['pinyin'] . ' ';
-                    $bigHasResult = true;
-                }
-            }
-            else
-            {
-                $hasResult = false;
-                for($i = $index + 1; $i < $stackLength; ++$i)
-                {
-                    if($this->lengthPos[$len] === $i)
+                    foreach($originResult as $resultItem)
                     {
-                        $t = $this->extractPinyins($str, $str2, $i);
-                        $hasResult = false !== $t;
-                        $bigHasResult |= $hasResult;
-                        if(false !== $t)
-                        {
-                            $result2 .= $t . ' ';
-                        }
-                        break;
+                        $resultItem[] = $item['text'];
+                        $itemResult[] = &$resultItem;
+                        unset($resultItem);
                     }
                 }
-                if($hasResult)
+                if($itemNextIndex < $length)
                 {
-                    $result .= $item['pinyin'] . ' ' . $result2 . ' ';
+                    $stacks[] = [
+                        'index'     =>  $itemNextIndex,
+                        'result'    =>  $itemResult,
+                    ];
+                }
+                else
+                {
+                    $result = array_merge($result, $itemResult);
                 }
             }
+            unset($tresult);
         }
-        if(!$bigHasResult)
+        if(null !== $wordSplit)
         {
-            return false;
+            foreach($result as &$item)
+            {
+                $item = implode($wordSplit, $item);
+            }
         }
         return $result;
     }
 
-    private function parseResults($index = 0, &$result)
+    private function parseBlock($text, &$blocks, &$beginMaps, &$endMaps, &$length)
     {
-        $result = array();
-        if(!isset($this->results[$index][0]))
+        // 把每个连续的拼音连成块
+        $blocks = preg_split('/([^a-zA-Z]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $hasNoPinyinChars = isset($blocks[1]);
+        if($hasNoPinyinChars)
         {
-            $str = $this->splitStr($this->pinyins[$index]);
-            if(isset($this->results[$index + 1]))
-            {
-                $this->parseResults($index + 1, $tresult);
-                if(isset($tresult[0]))
-                {
-                    foreach($tresult as $item2)
-                    {
-                        $result[] = $str . $item2;
-                    }
-                }
-                else
-                {
-                    $result[] = $str;
-                }
-            }
-            else
-            {
-                $result[] = $str;
-            }
+            $oddIsPinyin = preg_match('/^([^a-zA-Z]+)$/', $blocks[0]) > 0;
         }
-        else
+
+        $shengmuList = Chinese::$chineseData['pinyin']['shengmu'];
+        $relationList = Chinese::$chineseData['pinyin']['relation'];
+
+        $length = 0;
+        $beginMaps = $endMaps = [];
+        // 遍历每个块
+        foreach($blocks as $blockIndex => $block)
         {
-            foreach($this->results[$index] as $item)
+            $blockLength = mb_strlen($block, 'UTF-8');
+            if($hasNoPinyinChars)
             {
-                if(isset($this->results[$index + 1]))
+                $blockIndexIsOdd = (1 === ($blockIndex & 1));
+                if($oddIsPinyin !== $blockIndexIsOdd)
                 {
-                    $this->parseResults($index + 1, $tresult);
-                    if(isset($tresult[0]))
+                    $begin = $length;
+                    $length += $blockLength;
+                    $beginMaps[$begin][] = [
+                        'text'      =>  $block,
+                        'isPinyin'  =>  false,
+                        'relation'  =>  null,
+                        'begin'     =>  $begin,
+                        'end'       =>  $length - 1,
+                    ];
+                    continue;
+                }
+            }
+            $tempBlockResults = [];
+            // 遍历每个字
+            for($i = 0; $i < $blockLength; ++$i)
+            {
+                $character = mb_substr($block, $i, 1, 'UTF-8');
+                foreach(array_keys($tempBlockResults) as $j)
+                {
+                    $tempBlockResultItem = &$tempBlockResults[$j];
+                    $relation = &$tempBlockResultItem['relation'];
+                    if(isset($relation[$character]))
                     {
-                        foreach($tresult as $item2)
+                        if($tempBlockResultItem['isPinyin'])
                         {
-                            $result[] = $item . $item2;
+                            $tempBlockResultItem2 = $tempBlockResultItem;
+                            $tempBlockResultItem2['end'] = $end = $length + $i - 1;
+                            $tempBlockResultItem['flag'] = 'a';
+                            unset($tempBlockResultItem2['relation']);
+                            $beginMaps[$tempBlockResultItem2['begin']][] = $tempBlockResultItem2;
+                            if($tempBlockResultItem2['isPinyin'])
+                            {
+                                $endMaps[$end] = true;
+                            }
                         }
+                        $tempBlockResultItem['isPinyin'] = isset($relation[$character]['py']);
+                        $tempBlockResultItem['text'] .= $character;
+                        $tempBlockResultItem['relation'] = &$relation[$character];
                     }
                     else
                     {
-                        $result[] = $item;
+                        // 保存
+                        $tempBlockResultItem['end'] = $end = $length + $i - 1;
+                        $tempBlockResultItem['flag'] = 'b';
+                        unset($tempBlockResultItem['relation']);
+                        $beginMaps[$tempBlockResultItem['begin']][] = $tempBlockResultItem;
+                        if($tempBlockResultItem['isPinyin'])
+                        {
+                            $endMaps[$end] = true;
+                        }
+                        unset($tempBlockResults[$j]);
+                    }
+                    unset($tempBlockResultItem, $relation);
+                }
+                $tempBlockResults[] = [
+                    'text'      =>  $character,
+                    'isPinyin'  =>  isset($relationList[$character]['py']),
+                    'relation'  =>  &$relationList[$character],
+                    'begin'     =>  $length + $i,
+                ];
+            }
+            if($tempBlockResults)
+            {
+                foreach($tempBlockResults as $tempBlockResultItem)
+                {
+                    // 保存
+                    $tempBlockResultItem['flag'] = 'c';
+                    $tempBlockResultItem['end'] = $end = $length + $i - 1;
+                    unset($tempBlockResultItem['relation']);
+                    $beginMaps[$tempBlockResultItem['begin']][] = $tempBlockResultItem;
+                    if($tempBlockResultItem['isPinyin'])
+                    {
+                        $endMaps[$end] = true;
                     }
                 }
-                else
-                {
-                    $result[] = $item;
-                }
             }
-
+            $length += $blockLength;
         }
-        return $result;
+
     }
 
-    private function checkStack($str, &$isIn, &$isPinyin)
-    {
-        $tmp = &Chinese::$chineseData['pinyin']['relation'];
-        $length = strlen($str);
-        for($i = 0; $i < $length; ++$i)
-        {
-            if(isset($tmp[$str[$i]]))
-            {
-                $tmp = &$tmp[$str[$i]];
-            }
-            else
-            {
-                $isIn = $isPinyin = false;
-                return;
-            }
-        }
-        $isIn = true;
-        $isPinyin = isset($tmp['py']);
-    }
-    
-    private function charIsLetter($char)
-    {
-        $ascii = ord($char);
-        return ($ascii >= 65 && $ascii <= 90) || ($ascii >= 97 && $ascii <= 172);
-    }
-
-    private function splitStr($string)
-    {
-        $len = mb_strlen($string, 'UTF-8');
-        $result = '';
-        for($i = 0; $i < $len; ++$i)
-        {
-            $result .= mb_substr($string, $i, 1, 'UTF-8') . ' ';
-        }
-        return isset($result[1]) ? substr($result, 0, -1) : $result;
-    }
 }

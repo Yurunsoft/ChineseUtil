@@ -71,7 +71,7 @@ Chinese::setMode('JSON');
 
 ```
 "require": {
-    "yurunsoft/chinese-util" : "~1.0"
+    "yurunsoft/chinese-util" : "~1.1"
 }
 ```
 
@@ -111,21 +111,58 @@ var_dump(Chinese::toPinyin($string, Pinyin::CONVERT_MODE_PINYIN, ' ', false));
 
 ### 拼音分词
 
+**结果是字符串：**
+
 ```php
 use \Yurun\Util\Chinese;
 $string2 = 'xianggang';
 echo '"', $string2, '"的分词结果:', PHP_EOL;
 var_dump(Chinese::splitPinyin($string2));
-/**
+```
+
 输出结果:
+
+```shell
 "xianggang"的分词结果:
 array(2) {
   [0]=>
-  string(12) "xi ang gang "
+  string(11) "xiang gang"
   [1]=>
-  string(11) "xiang gang "
+  string(12) "xi ang gang"
 }
- * /
+```
+
+**结果是数组：**
+
+```php
+use \Yurun\Util\Chinese;
+$string2 = 'xianggang';
+echo '"', $string2, '"的分词结果:', PHP_EOL;
+var_dump(Chinese::splitPinyinArray($string2));
+```
+
+输出结果:
+
+```shell
+"xianggang"的分词结果:
+array(2) {
+  [0]=>
+  array(2) {
+    [0]=>
+    string(5) "xiang"
+    [1]=>
+    string(4) "gang"
+  }
+  [1]=>
+  array(3) {
+    [0]=>
+    string(2) "xi"
+    [1]=>
+    string(3) "ang"
+    [2]=>
+    string(4) "gang"
+  }
+}
 ```
 
 ### 简繁互转
@@ -137,8 +174,11 @@ echo '"', $string3, '"的简体转换:', PHP_EOL;
 var_dump(Chinese::toSimplified($string3));
 echo '"', $string3, '"的繁体转换:', PHP_EOL;
 var_dump(Chinese::toTraditional($string3));
-/**
+```
+
 输出结果:
+
+```shell
 "中华人民共和国！恭喜發財！"的简体转换:
 array(1) {
   [0]=>
@@ -149,7 +189,6 @@ array(1) {
   [0]=>
   string(39) "中華人民共和國！恭喜發財！"
 }
- * /
 ```
 
 ### 数字转换
@@ -168,12 +207,14 @@ function test($number)
 test(1.234);
 test(-1234567890.666);
 test(pi());
-/**
+```
+
 输出结果:
+
+```shell
 1.234=>一点二三四=>1.234=>true
 -1234567890.666=>负十二亿三千四百五十六万七千八百九十点六六六=>-1234567890.666=>true
 3.1415926535898=>三点一四一五九二六五三五八九八=>3.1415926535898=>true
- */
 ```
 
 ### 金额数字转换
@@ -191,9 +232,12 @@ function test($number)
 
 test(1.234);
 test(-1234567890.666);
-/**
+```
+
+输出结果:
+
+```shell
 输出结果:
 1.234=>壹圆贰角叁分肆厘=>1.234=>true
 -1234567890.666=>负壹拾贰亿叁仟肆佰伍拾陆万柒仟捌佰玖拾圆陆角陆分陆厘=>-1234567890.666=>true
- */
 ```

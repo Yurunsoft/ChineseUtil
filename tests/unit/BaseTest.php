@@ -452,9 +452,41 @@ EXPECTED
     public function testPinyinSplit()
     {
         $this->assertEquals([
-            'xi ang gang ',
-            'xiang gang ',
+            ['xiang', 'gang'],
+            ['xi', 'ang', 'gang'],
+        ], Chinese::splitPinyinArray('xianggang'));
+
+        $this->assertEquals([
+            'xiang gang',
+            'xi ang gang',
         ], Chinese::splitPinyin('xianggang'));
+
+        $this->assertEquals([
+            's b te lang pu s b',
+        ], Chinese::splitPinyin('sbtelangpusb'));
+    
+        $this->assertEquals([
+            '啊 xian',
+            '啊 xi an',
+        ], Chinese::splitPinyin('啊xian'));
+    
+        $this->assertEquals([
+            'xi 啊 an',
+        ], Chinese::splitPinyin('xi啊an'));
+    
+        $this->assertEquals([
+            'xian 啊',
+            'xi an 啊',
+        ], Chinese::splitPinyin('xian啊'));
+    
+        $this->assertEquals([
+            '一 xian 二',
+            '一 xi an 二',
+        ], Chinese::splitPinyin('一xian二'));
+    
+        $this->assertEquals([
+            '一 xi 二 an 三',
+        ], Chinese::splitPinyin('一xi二an三'));
     }
 
     /**

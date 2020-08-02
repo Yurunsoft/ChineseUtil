@@ -77,9 +77,19 @@ class Chinese
      * @param string $string
      * @return array
      */
-    public static function splitPinyin($string)
+    public static function splitPinyin($string, $wordSplit = ' ')
     {
-        return PinyinSplit::split($string);
+        return PinyinSplit::split($string, $wordSplit);
+    }
+
+    /**
+     * 拼音分词
+     * @param string $string
+     * @return array
+     */
+    public static function splitPinyinArray($string)
+    {
+        return PinyinSplit::split($string, null);
     }
 
     /**
