@@ -33,7 +33,7 @@ class PinyinSplit
 
     public function parse($text, $wordSplit = ' ')
     {
-        $this->parseBlock($text, $blocks, $beginMaps, $endMaps, $length);
+        $this->parseBlock($text, $beginMaps, $endMaps, $length);
         if(!isset($beginMaps[0]))
         {
             throw new \RuntimeException('Data error');
@@ -75,12 +75,11 @@ class PinyinSplit
                 $itemResult = [];
                 if($first)
                 {
-                    foreach($tresult as &$resultItem)
+                    foreach($tresult as $resultItem)
                     {
                         $resultItem[] = $item['text'];
-                        $itemResult[] = &$resultItem;
+                        $itemResult[] = $resultItem;
                     }
-                    unset($resultItem);
                     $first = false;
                 }
                 else
@@ -88,8 +87,7 @@ class PinyinSplit
                     foreach($originResult as $resultItem)
                     {
                         $resultItem[] = $item['text'];
-                        $itemResult[] = &$resultItem;
-                        unset($resultItem);
+                        $itemResult[] = $resultItem;
                     }
                 }
                 if($itemNextIndex < $length)
@@ -104,7 +102,6 @@ class PinyinSplit
                     $result = array_merge($result, $itemResult);
                 }
             }
-            unset($tresult);
         }
         if(null !== $wordSplit)
         {
@@ -116,7 +113,7 @@ class PinyinSplit
         return $result;
     }
 
-    private function parseBlock($text, &$blocks, &$beginMaps, &$endMaps, &$length)
+    private function parseBlock($text, &$beginMaps, &$endMaps, &$length)
     {
         // 把每个连续的拼音连成块
         $blocks = preg_split('/([^a-zA-Z]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);

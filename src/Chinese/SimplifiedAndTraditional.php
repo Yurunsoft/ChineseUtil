@@ -12,13 +12,6 @@ class SimplifiedAndTraditional
     public static $handler;
 
     /**
-     * 处理器的模式
-     *
-     * @var string
-     */
-    private static $handlerMode;
-
-    /**
      * 繁体转简体
      * @param string $string
      * @return array
@@ -44,10 +37,9 @@ class SimplifiedAndTraditional
      */
     protected static function getHandler()
     {
-        $mode = Chinese::getMode();
-        if(null === static::$handler || $mode !== static::$handlerMode)
+        if(null === static::$handler)
         {
-            $className = '\Yurun\Util\Chinese\Driver\SimplifiedTraditional\\' . $mode;
+            $className = '\Yurun\Util\Chinese\Driver\SimplifiedTraditional\\' . Chinese::getMode();
             static::$handler = new $className;
         }
         return static::$handler;

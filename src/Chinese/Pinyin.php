@@ -37,13 +37,6 @@ class Pinyin
     public static $handler;
 
     /**
-     * 处理器的模式
-     *
-     * @var string
-     */
-    private static $handlerMode;
-
-    /**
      * 把字符串转为拼音结果，返回的数组成员为数组
      * @param string $string
      * @param int $mode
@@ -74,10 +67,9 @@ class Pinyin
      */
     protected static function getHandler()
     {
-        $mode = Chinese::getMode();
-        if(null === static::$handler || $mode !== static::$handlerMode)
+        if(null === static::$handler)
         {
-            $className = '\Yurun\Util\Chinese\Driver\Pinyin\\' . $mode;
+            $className = '\Yurun\Util\Chinese\Driver\Pinyin\\' . Chinese::getMode();
             static::$handler = new $className;
         }
         return static::$handler;
