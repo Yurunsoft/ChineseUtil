@@ -49,22 +49,14 @@ class PinyinSplit
         {
             $stack = array_pop($stacks);
             $index = $stack['index'];
-            $originResult = json_decode(json_encode($stack['result'], true));
-            $tresult = &$stack['result'];
             if(!isset($beginMaps[$index]))
             {
                 throw new \RuntimeException('Index value error');
             }
-            $first = true;
             foreach($beginMaps[$index] as $item)
             {
                 if(!$item['isPinyin'] && isset($endMaps[$index]))
                 {
-                    foreach($tresult as &$resultItem)
-                    {
-                        $resultItem = null;
-                    }
-                    unset($resultItem);
                     continue;
                 }
                 $itemNextIndex = $item['end'] + 1;
@@ -73,22 +65,10 @@ class PinyinSplit
                     continue;
                 }
                 $itemResult = [];
-                if($first)
+                foreach($stack['result'] as $resultItem)
                 {
-                    foreach($tresult as $resultItem)
-                    {
-                        $resultItem[] = $item['text'];
-                        $itemResult[] = $resultItem;
-                    }
-                    $first = false;
-                }
-                else
-                {
-                    foreach($originResult as $resultItem)
-                    {
-                        $resultItem[] = $item['text'];
-                        $itemResult[] = $resultItem;
-                    }
+                    $resultItem[] = $item['text'];
+                    $itemResult[] = $resultItem;
                 }
                 if($itemNextIndex < $length)
                 {
