@@ -100,7 +100,7 @@ class PinyinSplit
         $hasNoPinyinChars = isset($blocks[1]);
         if($hasNoPinyinChars)
         {
-            $oddIsPinyin = preg_match('/^([^a-zA-Z]+)$/', $blocks[0]) > 0;
+            $oddIsPinyin = preg_match('/^([a-zA-Z]+)$/', $blocks[0]) > 0;
         }
 
         $relationList = Chinese::$chineseData['pinyin']['relation'];
@@ -114,7 +114,7 @@ class PinyinSplit
             if($hasNoPinyinChars)
             {
                 $blockIndexIsOdd = (1 === ($blockIndex & 1));
-                if($oddIsPinyin !== $blockIndexIsOdd)
+                if($oddIsPinyin === $blockIndexIsOdd)
                 {
                     $begin = $length;
                     $length += $blockLength;
