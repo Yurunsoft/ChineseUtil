@@ -4,7 +4,7 @@ namespace Yurun\Util\Chinese;
 abstract class Number
 {
     public static $numberMap = [
-        0   => '零',
+        0   =>  '零',
         1   =>  '一',
         2   =>  '二',
         3   =>  '三',
@@ -64,31 +64,23 @@ abstract class Number
                     throw new \InvalidArgumentException(sprintf('%s is not a valied chinese number text', $text));
                 }
 
-                // 单位
-                if($key > 3)
-                {
-                    $tNumber = bcpow(10, (($key - 3) * 4) + 4);
-                }
-                else
-                {
-                    $tNumber = bcpow(10, $key + 1);
-                }
-
                 if(0 === $key && 0 === $lastNum)
                 {
                     $lastNum = 1;
                 }
 
+                // 单位
                 if($key >= 3)
                 {
                     $partNumber += $lastNum;
-                    $number += $partNumber * $tNumber;
+                    $number += $partNumber * bcpow(10, (($key - 3) * 4) + 4);
                     $partNumber = 0;
                 }
                 else
                 {
-                    $partNumber += $lastNum * $tNumber;
+                    $partNumber += $lastNum * bcpow(10, $key + 1);
                 }
+
                 $lastNum = 0;
             }
             else
@@ -187,7 +179,7 @@ abstract class Number
         $unitIndex = ($length - 1) / 4 >> 0;
         if(0 === $unitIndex)
         {
-            $unitIndex = strlen($firstItems) - 2;
+            $unitIndex = -1;
         }
         else
         {
@@ -199,7 +191,7 @@ abstract class Number
         {
             $index = $unitIndex - $i;
 
-            $length = isset($item[3]) ? 4 : strlen($item);
+            $length = strlen($item);
 
             $itemResult = '';
             $has0 = false;
