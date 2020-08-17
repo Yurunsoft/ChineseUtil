@@ -17,7 +17,7 @@ jobs:
         run: |
           [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
           composer update
-          phpunit
+          phpunit -c ./tests/phpunit.xml
 
   build-windows-x64:
     runs-on: windows-latest
@@ -33,7 +33,7 @@ jobs:
         run: |
           [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
           composer update
-          phpunit
+          phpunit -c ./tests/phpunit.xml
 
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
       - name: swoole ffi test
         run: |
           composer update
-          vendor/bin/phpunit
+          composer test
 
   build-macos:
     runs-on: macos-latest
@@ -67,4 +67,4 @@ jobs:
       - name: swoole ffi test
         run: |
           composer update
-          vendor/bin/phpunit
+          composer test
