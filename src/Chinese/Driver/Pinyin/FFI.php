@@ -8,7 +8,7 @@ class FFI implements BaseInterface
 {
     public function __construct()
     {
-        FFIDriver::getHandler();
+        FFIDriver::getHandler('FFI');
     }
 
     /**

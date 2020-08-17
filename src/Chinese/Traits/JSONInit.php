@@ -38,7 +38,7 @@ trait JSONInit
             }
             else
             {
-                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(Chinese::$option['pinyinSoundDataPath']), true);
+                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(Chinese::$option['pinyinSoundDataPath']), true)['sound'];
             }
         }
     }

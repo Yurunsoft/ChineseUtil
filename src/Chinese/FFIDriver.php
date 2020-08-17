@@ -6,11 +6,11 @@ use \FFI as PHPFFI;
 class FFIDriver
 {
     /**
-     * 处理器
+     * 处理器集合
      *
-     * @var static
+     * @var static[]
      */
-    private static $handler;
+    private static $handlers;
 
     /**
      * .so 文件路径
@@ -91,15 +91,17 @@ class FFIDriver
 
     /**
      * 获取拼音处理器
+     * 
+     * @param string $type
      * @return static
      */
-    public static function getHandler()
+    public static function getHandler(string $type)
     {
-        if(null === static::$handler)
+        if(!isset(static::$handlers[$type]))
         {
-            static::$handler = new static(static::$library, static::$characterDataPath, static::$pinyinDataPath);
+            static::$handlers[$type] = new static(static::$library, static::$characterDataPath, static::$pinyinDataPath);
         }
-        return static::$handler;
+        return static::$handlers[$type];
     }
 
 }

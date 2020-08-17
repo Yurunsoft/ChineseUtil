@@ -32,6 +32,8 @@ Expand-Archive "php_dev.zip" "C:\"
 
 (gc C:\php\php.ini) -replace ';extension=openssl', 'extension=openssl' | Out-File C:\php\php.ini -encoding Utf8
 
+(gc C:\php\php.ini) -replace ';extension=pdo_pgsql', 'extension=pdo_pgsql' | Out-File C:\php\php.ini -encoding Utf8
+
 (gc C:\php\php.ini) -replace ';curl.cainfo =', 'curl.cainfo = "C:\cacert.pem"' | Out-File C:\php\php.ini -encoding Utf8
 
 (gc C:\php\php.ini) -replace ';openssl.cafile=', 'openssl.cafile="C:\cacert.pem"' | Out-File C:\php\php.ini -encoding Utf8

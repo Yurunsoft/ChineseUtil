@@ -20,7 +20,7 @@ class Memory implements BaseInterface
             }
             else
             {
-                Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(Chinese::$option['pinyinSplitDataPath']), true);
+                Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(Chinese::$option['pinyinSplitDataPath']), true)['split'];
             }
         }
     }

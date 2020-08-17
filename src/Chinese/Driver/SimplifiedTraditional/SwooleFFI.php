@@ -7,7 +7,7 @@ class SwooleFFI implements BaseInterface
 {
     public function __construct()
     {
-        FFIDriver::getHandler();
+        FFIDriver::getHandler('SwooleFFI');
     }
 
     /**
