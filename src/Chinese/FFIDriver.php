@@ -61,8 +61,10 @@ class FFIDriver
                     {
                         $library = 'libchinese_util-php7.4.dylib';
                     }
+                    break;
                 case 'Windows':
-                    return 'Release/chinese_util-php7.4-x' . (4 === PHP_INT_SIZE ? '86' : '64') . '.dll';
+                    $library = 'chinese_util-php7.4-x' . (4 === PHP_INT_SIZE ? '86' : '64') . '.dll';
+                    break;
                 default:
                     if($swooleInstalled)
                     {
