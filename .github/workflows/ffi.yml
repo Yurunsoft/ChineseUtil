@@ -67,4 +67,4 @@ jobs:
       - name: swoole ffi test
         run: |
           composer update
-          composer test
+          sudo composer test
