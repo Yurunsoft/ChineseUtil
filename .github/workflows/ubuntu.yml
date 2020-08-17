@@ -1,0 +1,62 @@
+name: Ubuntu
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: configure
+        run: cmake -Htest -Bbuild/test -DENABLE_TEST_COVERAGE=1
+
+      - name: build
+        run: cmake --build build/test --config Debug -j4
+
+      - name: test
+        run: cmake --build build/test --target test
+
+      - name: collect code coverage
+        run: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+
+      - name: install php
+        run: sudo .github/workflows/bin/install-php7.4.sh
+
+      - name: build and install library with php
+        run: |
+          rm -rf build
+          cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DWITH_PHP=1
+          sudo cmake --build build --target install --config Release -j
+
+      - name: php test
+        run: |
+          cd phptest
+          composer update
+          vendor/bin/phpunit
+          cd ../
+
+      - name: install swoole
+        run: sudo .github/workflows/bin/install-swoole4.5.sh
+
+      - name: build and install library with swoole
+        run: |
+          cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DWITH_PHP=1 -DWITH_SWOOLE=1
+          sudo cmake --build build --target install --config Release -j
+
+      - name: swoole test
+        run: |
+          cd phptest
+          composer update
+          vendor/bin/phpunit

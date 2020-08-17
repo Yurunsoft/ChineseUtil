@@ -20,6 +20,9 @@ before_script:
   - if [[ $DISABLE_XDEBUG != false ]]; then
       phpenv config-rm xdebug.ini;
     fi
+  - if [[ $TRAVIS_PHP_VERSION = "7.4" ]]; then
+      phpenv config-add .travis/php.ini;
+    fi
   - date
   - env
   - uname -a

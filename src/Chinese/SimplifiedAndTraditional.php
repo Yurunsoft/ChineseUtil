@@ -6,7 +6,7 @@ use \Yurun\Util\Chinese;
 class SimplifiedAndTraditional
 {
     /**
-     * 拼音处理器
+     * 处理器
      * @var \Yurun\Util\Chinese\Driver\SimplifiedTraditional\BaseInterface
      */
     public static $handler;
@@ -39,7 +39,7 @@ class SimplifiedAndTraditional
     }
 
     /**
-     * 获取拼音处理器
+     * 获取处理器
      * @return \Yurun\Util\Chinese\Driver\SimplifiedTraditional\BaseInterface
      */
     protected static function getHandler()

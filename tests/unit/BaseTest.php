@@ -14,8 +14,14 @@ abstract class BaseTest extends TestCase
      */
     protected $mode;
 
+    protected function check()
+    {
+
+    }
+
     public function testMode()
     {
+        $this->check();
         Chinese::setMode($this->mode);
         $this->assertEquals($this->mode, Chinese::getMode());
     }
@@ -27,6 +33,7 @@ abstract class BaseTest extends TestCase
      */
     public function testPinyin1()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123'));
         $this->assertEquals(<<<EXPECTED
@@ -132,6 +139,7 @@ EXPECTED
      */
     public function testPinyin2()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('我的'));
         $this->assertEquals(<<<EXPECTED
@@ -224,6 +232,7 @@ EXPECTED
      */
     public function testPinyinAll()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN));
         $this->assertEquals(<<<EXPECTED
@@ -263,6 +272,7 @@ EXPECTED
      */
     public function testPinyinFirst()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_FIRST));
         $this->assertEquals(<<<EXPECTED
@@ -302,6 +312,7 @@ EXPECTED
      */
     public function testPinyinSound()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_SOUND));
         $this->assertEquals(<<<EXPECTED
@@ -341,6 +352,7 @@ EXPECTED
      */
     public function testPinyinSoundNumber()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER));
         $this->assertEquals(<<<EXPECTED
@@ -380,6 +392,7 @@ EXPECTED
      */
     public function testPinyinCustom()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER, ' '));
         $this->assertEquals(<<<EXPECTED
@@ -407,6 +420,7 @@ EXPECTED
      */
     public function testPinyinSplitNoPinyin()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN, '-'));
         $this->assertEquals(<<<EXPECTED
@@ -429,6 +443,7 @@ EXPECTED
      */
     public function testPinyinNotSplitNoPinyin()
     {
+        $this->check();
         ob_start();
         var_dump(Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN, '-', false));
         $this->assertEquals(<<<EXPECTED
@@ -451,6 +466,7 @@ EXPECTED
      */
     public function testPinyinSplit()
     {
+        $this->check();
         $this->assertEquals([
             ['xiang', 'gang'],
             ['xi', 'ang', 'gang'],
@@ -496,6 +512,7 @@ EXPECTED
      */
     public function testSimplifiedAndTraditional()
     {
+        $this->check();
         $simplified = '中华人民共和国！恭喜发财！';
         $traditional = '中華人民共和國！恭喜發財！';
         $this->assertEquals([$traditional, '中華人民共和國！恭喜髮財！'], Chinese::toTraditional($simplified));
