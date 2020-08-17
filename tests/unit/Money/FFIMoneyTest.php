@@ -1,10 +1,10 @@
 <?php
-namespace Yurun\Util\ChineseUtil\Test\Number;
+namespace Yurun\Util\ChineseUtil\Test\Money;
 
 /**
- * @testdox FFI Mode 中文数字转换
+ * @testdox FFI Mode 中文金额转换
  */
-class FFINumberTest extends BaseNumberTest
+class FFIMoneyTest extends BaseMoneyTest
 {
     /**
      * 模式

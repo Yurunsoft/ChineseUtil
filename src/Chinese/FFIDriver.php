@@ -78,7 +78,15 @@ class FFIDriver
         $this->ffi = $ffi = PHPFFI::cdef(file_get_contents($clibPath . '/include.h'), $library);
         $ffi->init_chinese_util();
         $dataPath = dirname(__DIR__, 2) . '/data';
-        init_chinese_dict($characterDataPath ?? ($dataPath . '/charsData.json'), $pinyinDataPath ?? ($dataPath . '/pinyinData.json'));
+        if(!$characterDataPath)
+        {
+            $characterDataPath = $dataPath . '/charsData.json';
+        }
+        if(!$pinyinDataPath)
+        {
+            $pinyinDataPath = $dataPath . '/pinyinData.json';
+        }
+        init_chinese_dict($characterDataPath, $pinyinDataPath);
     }
 
     /**
