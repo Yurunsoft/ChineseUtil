@@ -34,11 +34,11 @@ trait JSONInit
             }
             else if(empty(Chinese::$option['pinyinSoundDataPath']))
             {
-                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/data/pinyinSound.json'), true);
+                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/data/pinyinData.json'), true)['sound'];
             }
             else
             {
-                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(Chinese::$option['pinyinSoundDataPath']), true);
+                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(Chinese::$option['pinyinSoundDataPath']), true)['sound'];
             }
         }
     }

@@ -1,0 +1,70 @@
+name: FFI Test
+
+on: [push, pull_request]
+
+jobs:
+  build-windows-x86:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: |
+          .\.github/workflows/bin/install-php7.4-win-x86.ps1
+
+      - name: ffi test
+        run: |
+          [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
+          composer update
+          phpunit -c ./tests/phpunit.xml
+
+  build-windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: |
+          .\.github/workflows/bin/install-php7.4-win-x64.ps1
+
+      - name: ffi test
+        run: |
+          [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
+          composer update
+          phpunit -c ./tests/phpunit.xml
+
+  build-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: sudo .github/workflows/bin/install-php7.4.sh
+
+      - name: install swoole
+        run: sudo .github/workflows/bin/install-swoole4.5.sh
+
+      - name: swoole ffi test
+        run: |
+          composer update
+          composer test
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: sudo .github/workflows/bin/install-php7.4-mac.sh
+
+      - name: install swoole
+        run: sudo .github/workflows/bin/install-swoole4.5.sh
+
+      - name: swoole ffi test
+        run: |
+          composer update
+          sudo composer test
