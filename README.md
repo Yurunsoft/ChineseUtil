@@ -1,6 +1,6 @@
 # ChineseUtil
 
-PHP 中文工具类，支持汉字转拼音、拼音分词、简繁互转、数字转换、金额数字转换。
+PHP 中文工具包，支持汉字转拼音、拼音分词、简繁互转、数字转换、金额数字转换。
 
 由于中文的博大精深，字有多音字，简体字和繁体字也有多种对应。并且本类库返回的所有结果，均为包含所有组合的数组。
 
@@ -77,7 +77,7 @@ Chinese::setMode('SwooleFFI');
 
 ```
 "require": {
-    "yurunsoft/chinese-util" : "~1.1"
+    "yurunsoft/chinese-util" : "~2.0"
 }
 ```
 
