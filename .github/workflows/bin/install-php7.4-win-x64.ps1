@@ -1,8 +1,8 @@
 $vcredist_url="https://aka.ms/vs/16/release/vc_redist.x64.exe"
 
-$php_url="https://windows.php.net/downloads/releases/php-7.4.9-nts-Win32-vc15-x64.zip"
+$php_url="https://windows.php.net/downloads/releases/archives/php-7.4.10-nts-Win32-vc15-x64.zip"
 
-$php_dev_url="https://windows.php.net/downloads/releases/php-devel-pack-7.4.9-nts-Win32-vc15-x64.zip"
+$php_dev_url="https://windows.php.net/downloads/releases/archives/php-devel-pack-7.4.10-nts-Win32-vc15-x64.zip"
 
 $cacert_pem_url="https://curl.haxx.se/ca/cacert.pem"
 
