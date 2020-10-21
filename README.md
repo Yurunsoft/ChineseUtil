@@ -67,6 +67,16 @@ Chinese::setMode('SwooleFFI');
 
 无论何种模式，拼音分词所需数据总是从 JSON 数据中加载。
 
+FFI 参数设置：(一般用于自己编译的情况)
+
+```php
+use Yurun\Util\Chinese\FFIDriver;
+
+FFIDriver::$library = '.so 文件路径';
+FFIDriver::$characterDataPath = '字符数据文件路径';
+FFIDriver::$pinyinDataPath = '拼音数据文件路径';
+```
+
 ## 使用说明
 
 ### Composer 直接安装
