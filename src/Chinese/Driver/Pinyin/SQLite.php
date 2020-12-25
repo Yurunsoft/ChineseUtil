@@ -41,13 +41,13 @@ class SQLite extends Base
         {
             $result['pinyinFirst'] = [[]];
         }
-        $oldResultCount = null;
         foreach($list as $item)
         {
             // 拼音和拼音首字母
             $count = count($item['pinyin']);
             if($isPinyin || $isPinyinFirst)
             {
+                $oldResultCount = null;
                 if($isPinyin)
                 {
                     $oldResultCount = count($result['pinyin']);
