@@ -15,7 +15,7 @@ class SwooleFFIModeTest extends BaseTest
 
     protected function check()
     {
-        if(version_compare(PHP_VERSION, '<', '7.4'))
+        if(version_compare(PHP_VERSION, '7.4', '<'))
         {
             $this->markTestSkipped('PHP need >= 7.4');
         }

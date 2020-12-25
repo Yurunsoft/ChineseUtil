@@ -6,3 +6,5 @@ RUN apt update
 RUN apt install unzip
 
 RUN curl -o /usr/bin/composer https://getcomposer.org/composer-1.phar && chmod +x /usr/bin/composer
+
+RUN docker-php-ext-install bcmath > /dev/null
