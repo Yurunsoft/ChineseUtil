@@ -15,6 +15,10 @@ class FFIModeTest extends BaseTest
 
     protected function check()
     {
+        if(!(getenv('CHINESE_UTIL_FFI') ?: true))
+        {
+            $this->markTestSkipped('Not test FFI');
+        }
         if(version_compare(PHP_VERSION, '7.4', '<'))
         {
             $this->markTestSkipped('PHP need >= 7.4');

@@ -55,7 +55,7 @@ class FFIDriver
                 case 'Darwin':
                     if($swooleInstalled)
                     {
-                        $library = 'libchinese_util-swoole4.5.dylib';
+                        $library = 'libchinese_util-php7.4-swoole4.5.dylib';
                     }
                     else
                     {
@@ -68,7 +68,7 @@ class FFIDriver
                 default:
                     if($swooleInstalled)
                     {
-                        $library = 'libchinese_util-swoole4.5.so';
+                        $library = 'libchinese_util-php7.4-swoole4.5.so';
                     }
                     else
                     {

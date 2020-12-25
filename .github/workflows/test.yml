@@ -20,6 +20,7 @@ jobs:
 
     env:
       PHP_DOCKER_VERSION: ${{ matrix.php }}
+      CHINESE_UTIL_FFI: 0
 
     steps:
       - uses: actions/checkout@v1
