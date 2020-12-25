@@ -14,3 +14,18 @@ services:
             core: -1
         privileged: true
         command: tail -f /etc/group
+
+    swoole:
+        container_name: "swoole"
+        build:
+            context: .
+            dockerfile: ./swoole.dockerfile
+            args:
+                SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
+        volumes:
+            - "${GITHUB_WORKSPACE}:/ChineseUtil:rw"
+        working_dir: /ChineseUtil
+        ulimits:
+            core: -1
+        privileged: true
+        command: tail -f /etc/group
