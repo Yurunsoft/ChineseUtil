@@ -60,7 +60,7 @@ jobs:
           ./.github/prepare-test.sh swoole
 
       - name: test
-        run: docker exec php composer test
+        run: docker exec swoole composer test
 
   windows-x86:
     runs-on: windows-latest
