@@ -1,0 +1,112 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  linux-php:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          [
+            5.4,
+            5.5,
+            5.6,
+            7.0,
+            "8.0"
+          ]
+
+    env:
+      PHP_DOCKER_VERSION: ${{ matrix.php }}
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: prepare
+        run: |
+          ./.github/prepare-test.sh php
+
+      - name: test
+        run: docker exec php composer test
+
+  linux-swoole:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        swoole:
+          [
+            4.5.10-php7.1,
+            4.5.10-php7.2,
+            4.5.10-php7.3,
+            4.5.10-php7.4,
+            4.4.23-php7.1,
+            4.4.23-php7.2,
+            4.4.23-php7.3,
+            4.4.23-php7.4,
+          ]
+
+    env:
+      SWOOLE_DOCKER_VERSION: ${{ matrix.swoole }}
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: prepare
+        run: |
+          ./.github/prepare-test.sh swoole
+
+      - name: test
+        run: docker exec swoole composer test
+
+  windows-x86:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: |
+          .\.github/workflows/bin/install-php7.4-win-x86.ps1
+
+      - name: ffi test
+        run: |
+          [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
+          composer update
+          phpunit -c ./tests/phpunit.xml
+
+  windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: |
+          .\.github/workflows/bin/install-php7.4-win-x64.ps1
+
+      - name: ffi test
+        run: |
+          [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
+          composer update
+          phpunit -c ./tests/phpunit.xml
+
+  macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: install php
+        run: .github/workflows/bin/install-php7.4-mac.sh
+
+      - name: install swoole
+        run: sudo .github/workflows/bin/install-swoole4.5.sh
+
+      - name: swoole ffi test
+        run: |
+          composer update
+          sudo composer test

@@ -15,7 +15,11 @@ class SwooleFFINumberTest extends BaseNumberTest
 
     protected function check()
     {
-        if(version_compare(PHP_VERSION, '<', '7.4'))
+        if('0' === getenv('CHINESE_UTIL_FFI'))
+        {
+            $this->markTestSkipped('Not test FFI');
+        }
+        if(version_compare(PHP_VERSION, '7.4', '<'))
         {
             $this->markTestSkipped('PHP need >= 7.4');
         }
