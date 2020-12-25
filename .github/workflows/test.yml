@@ -1,9 +1,41 @@
-name: FFI Test
+name: Test
 
 on: [push, pull_request]
 
 jobs:
-  build-windows-x86:
+  linux:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          [
+            5.4,
+            5.5,
+            5.6,
+            7.0,
+            7.1,
+            7.2,
+            7.3,
+            7.4,
+            8.0
+          ]
+
+    env:
+      PHP_DOCKER_VERSION: ${{ matrix.php }}
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: prepare
+        run: |
+          ./.github/prepare-test.sh php
+
+      - name: test
+        run: docker exec php composer test
+
+  windows-x86:
     runs-on: windows-latest
 
     steps:
@@ -19,7 +51,7 @@ jobs:
           composer update
           phpunit -c ./tests/phpunit.xml
 
-  build-windows-x64:
+  windows-x64:
     runs-on: windows-latest
 
     steps:
@@ -35,24 +67,7 @@ jobs:
           composer update
           phpunit -c ./tests/phpunit.xml
 
-  build-ubuntu:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: install php
-        run: sudo .github/workflows/bin/install-php7.4.sh
-
-      - name: install swoole
-        run: sudo .github/workflows/bin/install-swoole4.5.sh
-
-      - name: swoole ffi test
-        run: |
-          composer update
-          composer test
-
-  build-macos:
+  macos:
     runs-on: macos-latest
 
     steps:
