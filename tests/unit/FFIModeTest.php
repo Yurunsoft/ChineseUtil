@@ -15,7 +15,7 @@ class FFIModeTest extends BaseTest
 
     protected function check()
     {
-        if(!(getenv('CHINESE_UTIL_FFI') ?: true))
+        if('0' === getenv('CHINESE_UTIL_FFI'))
         {
             $this->markTestSkipped('Not test FFI');
         }
