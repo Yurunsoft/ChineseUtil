@@ -2,12 +2,13 @@ version: "3.4"
 services:
     php:
         container_name: "php"
+        environment:
+            - "CHINESE_UTIL_FFI=0"
         build:
             context: .
             dockerfile: ./php.dockerfile
             args:
                 PHP_DOCKER_VERSION: ${PHP_DOCKER_VERSION}
-                CHINESE_UTIL_FFI: ${CHINESE_UTIL_FFI}
         volumes:
             - "${GITHUB_WORKSPACE}:/ChineseUtil:rw"
         working_dir: /ChineseUtil
@@ -18,12 +19,13 @@ services:
 
     swoole:
         container_name: "swoole"
+        environment:
+            - "CHINESE_UTIL_FFI=0"
         build:
             context: .
             dockerfile: ./swoole.dockerfile
             args:
                 SWOOLE_DOCKER_VERSION: ${SWOOLE_DOCKER_VERSION}
-                CHINESE_UTIL_FFI: ${CHINESE_UTIL_FFI}
         volumes:
             - "${GITHUB_WORKSPACE}:/ChineseUtil:rw"
         working_dir: /ChineseUtil
