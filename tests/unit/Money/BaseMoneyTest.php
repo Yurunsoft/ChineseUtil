@@ -58,4 +58,19 @@ abstract class BaseMoneyTest extends TestCase
         $this->assertEquals(3.1415, Money::toNumber('叁圆壹角肆分壹厘伍毫'));
     }
 
+    public function testIssue8()
+    {
+        $this->check();
+        $this->assertEquals('零圆', Money::toChinese(0));
+        $this->assertEquals('零圆', Money::toChinese('0'));
+        $this->assertEquals('零圆', Money::toChinese('0.0'));
+    }
+
+    public function testIssue9()
+    {
+        $this->check();
+        $this->assertEquals('壹拾贰圆', Money::toChinese('12.0'));
+        $this->assertEquals('壹拾贰圆', Money::toChinese('12.00'));
+    }
+
 }

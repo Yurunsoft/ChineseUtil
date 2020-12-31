@@ -8,7 +8,7 @@ use Yurun\Util\Chinese\Money;
 
 function test($number)
 {
-    $chinese = Money::toChinese($number, [
+    $chinese = Money::toChinese((string) $number, [
         'tenMin'    =>  true, // “一十二” => “十二”
     ]);
     $afterMoney = Money::toNumber($chinese);

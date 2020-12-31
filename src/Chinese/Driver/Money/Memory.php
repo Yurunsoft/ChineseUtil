@@ -255,6 +255,10 @@ class Memory implements BaseInterface
                     }
                 }
             }
+            if($has0)
+            {
+                $itemResult .= static::$numberMap[0];
+            }
             if('' === $itemResult)
             {
                 if(isset(static::$unitMap[$index]))
@@ -316,6 +320,7 @@ class Memory implements BaseInterface
             }
         }
         $ltrimResult = Util::mbLtrim($result, static::$numberMap[0]);
-        return $ltrimResult === $result ? $ltrimResult : (static::$numberMap[0] . $ltrimResult);
+
+        return '' === $ltrimResult || $ltrimResult === $result ? $ltrimResult : (static::$numberMap[0] . $ltrimResult);
     }
 }
