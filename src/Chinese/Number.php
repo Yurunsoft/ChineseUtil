@@ -16,7 +16,7 @@ abstract class Number
      *
      * @var string
      */
-    private static $handlerMode;
+    private static $handlerMode = 'Memory';
 
     /**
      * 中文口语化数字转数字
@@ -50,7 +50,14 @@ abstract class Number
         $mode = Chinese::getMode();
         if(null === static::$handler || $mode !== static::$handlerMode)
         {
-            static::$handlerMode = $mode;
+            if(null === $mode)
+            {
+                $mode = static::$handlerMode;
+            }
+            else
+            {
+                static::$handlerMode = $mode;
+            }
             $className = '\Yurun\Util\Chinese\Driver\Number\\' . $mode;
             static::$handler = new $className;
         }

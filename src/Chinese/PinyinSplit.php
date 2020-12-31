@@ -16,7 +16,7 @@ class PinyinSplit
      *
      * @var string
      */
-    private static $handlerMode;
+    private static $handlerMode = 'Memory';
 
     /**
      * 拼音分词
@@ -39,7 +39,14 @@ class PinyinSplit
         $mode = Chinese::getMode();
         if(null === static::$handler || $mode !== static::$handlerMode)
         {
-            static::$handlerMode = $mode;
+            if(null === $mode)
+            {
+                $mode = static::$handlerMode;
+            }
+            else
+            {
+                static::$handlerMode = $mode;
+            }
             if(in_array($mode, [
                 'JSON',
                 'Memory',

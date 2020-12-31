@@ -16,7 +16,7 @@ abstract class Money
      *
      * @var string
      */
-    private static $handlerMode;
+    private static $handlerMode = 'Memory';
 
     /**
      * 中文金额大写转数字
@@ -50,7 +50,14 @@ abstract class Money
         $mode = Chinese::getMode();
         if(null === static::$handler || $mode !== static::$handlerMode)
         {
-            static::$handlerMode = $mode;
+            if(null === $mode)
+            {
+                $mode = static::$handlerMode;
+            }
+            else
+            {
+                static::$handlerMode = $mode;
+            }
             $className = '\Yurun\Util\Chinese\Driver\Money\\' . $mode;
             static::$handler = new $className;
         }

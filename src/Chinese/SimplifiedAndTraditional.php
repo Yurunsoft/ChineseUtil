@@ -16,7 +16,7 @@ class SimplifiedAndTraditional
      *
      * @var string
      */
-    private static $handlerMode;
+    private static $handlerMode = 'Memory';
 
     /**
      * 繁体转简体
@@ -47,7 +47,14 @@ class SimplifiedAndTraditional
         $mode = Chinese::getMode();
         if(null === static::$handler || $mode !== static::$handlerMode)
         {
-            static::$handlerMode = $mode;
+            if(null === $mode)
+            {
+                $mode = static::$handlerMode;
+            }
+            else
+            {
+                static::$handlerMode = $mode;
+            }
             $className = '\Yurun\Util\Chinese\Driver\SimplifiedTraditional\\' . $mode;
             static::$handler = new $className;
         }

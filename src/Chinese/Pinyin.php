@@ -41,7 +41,7 @@ class Pinyin
      *
      * @var string
      */
-    private static $handlerMode;
+    private static $handlerMode = 'JSON';
 
     /**
      * 把字符串转为拼音结果，返回的数组成员为数组
@@ -77,7 +77,14 @@ class Pinyin
         $mode = Chinese::getMode();
         if(null === static::$handler || $mode !== static::$handlerMode)
         {
-            static::$handlerMode = $mode;
+            if(null === $mode)
+            {
+                $mode = static::$handlerMode;
+            }
+            else
+            {
+                static::$handlerMode = $mode;
+            }
             $className = '\Yurun\Util\Chinese\Driver\Pinyin\\' . $mode;
             static::$handler = new $className;
         }
