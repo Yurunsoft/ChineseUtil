@@ -50,29 +50,30 @@ class FFIDriver
         if(null === $library)
         {
             $swooleInstalled = defined('SWOOLE_VERSION');
+            $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
             switch(PHP_OS_FAMILY)
             {
                 case 'Darwin':
                     if($swooleInstalled)
                     {
-                        $library = 'libchinese_util-php7.4-swoole4.5.dylib';
+                        $library = "libchinese_util-php{$phpVersion}-swoole4.5.dylib";
                     }
                     else
                     {
-                        $library = 'libchinese_util-php7.4.dylib';
+                        $library = "libchinese_util-php{$phpVersion}.dylib";
                     }
                     break;
                 case 'Windows':
-                    $library = 'chinese_util-php7.4-x' . (4 === PHP_INT_SIZE ? '86' : '64') . '.dll';
+                    $library = "chinese_util-php{$phpVersion}-x" . (4 === PHP_INT_SIZE ? '86' : '64') . '.dll';
                     break;
                 default:
                     if($swooleInstalled)
                     {
-                        $library = 'libchinese_util-php7.4-swoole4.5.so';
+                        $library = "libchinese_util-php{$phpVersion}-swoole4.5.so";
                     }
                     else
                     {
-                        $library = 'libchinese_util-php7.4.so';
+                        $library = "libchinese_util-php{$phpVersion}.so";
                     }
             }
             $library = $clibPath . '/' . $library;
