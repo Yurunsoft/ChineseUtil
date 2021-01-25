@@ -29,6 +29,7 @@ class Memory implements BaseInterface
     ];
 
     public static $moneyUnitMap = [
+        '元',
         '圆',
         '角',
         '分',
