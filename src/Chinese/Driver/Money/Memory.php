@@ -48,13 +48,13 @@ class Memory implements BaseInterface
         $length = mb_strlen($text);
         $number = $partNumber = $lastNum = $decimal = 0;
         $pom = 1; // 正数或负数，1或-1
-        $isContain = array_filter(static::$moneyUnitMap[0],function ($moneyUnit) use($text) {
+        $isContain = array_filter(static::$moneyUnitMap[0], function ($moneyUnit) use($text) {
             return strpos($text, $moneyUnit);
         });
         $flattenMoneyUnitMap = array_reduce(static::$moneyUnitMap, function ($result, $value) {
             return array_merge($result, is_array($value) ? $value : [$value]);
         },[]);
-        $isDecimal = empty($isContain);
+        $isDecimal = !!$isContain;
         $scale = count(static::$moneyUnitMap) - 1;
 
         $lastKey = -1;
