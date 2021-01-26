@@ -20,7 +20,7 @@ services:
     swoole:
         container_name: "swoole"
         environment:
-            - "CHINESE_UTIL_FFI=0"
+            - "CHINESE_UTIL_FFI=1"
         build:
             context: .
             dockerfile: ./swoole.dockerfile
