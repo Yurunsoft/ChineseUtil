@@ -74,7 +74,7 @@ class Memory implements BaseInterface
             {
                 ++$i;
                 $unit = mb_substr($text, $i, 1);
-                $unitKey = array_search($unit, $flattenMoneyUnitMap);
+                $unitKey = array_search($unit, $flattenMoneyUnitMap) - 1;
                 if(false === $unitKey)
                 {
                     --$i;
@@ -91,7 +91,7 @@ class Memory implements BaseInterface
 
                 if(false === $key)
                 {
-                    $key = array_search($char, $flattenMoneyUnitMap);
+                    $key = array_search($char, $flattenMoneyUnitMap) - 1;
                     if(false !== $key)
                     {
                         $isDecimal = true;
