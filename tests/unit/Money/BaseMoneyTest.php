@@ -41,7 +41,6 @@ abstract class BaseMoneyTest extends TestCase
 
         // 小数
         $this->assertEquals('叁圆壹角肆分壹厘伍毫', Money::toChinese(3.1415));
-
     }
 
     public function testToNumber()
@@ -49,13 +48,17 @@ abstract class BaseMoneyTest extends TestCase
         $this->check();
         // 数字
         $this->assertEquals(5, Money::toNumber('伍圆'));
+        $this->assertEquals(5, Money::toNumber('伍元'));
         $this->assertEquals(12, Money::toNumber('壹拾贰圆'));
+        $this->assertEquals(12, Money::toNumber('壹拾贰元'));
 
         // 负数
         $this->assertEquals(-5, Money::toNumber('负伍圆'));
+        $this->assertEquals(-5, Money::toNumber('负伍元'));
 
         // 小数
         $this->assertEquals(3.1415, Money::toNumber('叁圆壹角肆分壹厘伍毫'));
+        $this->assertEquals(3.1415, Money::toNumber('叁元壹角肆分壹厘伍毫'));
     }
 
     public function testIssue8()

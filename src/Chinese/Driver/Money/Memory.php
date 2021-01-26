@@ -29,7 +29,7 @@ class Memory implements BaseInterface
     ];
 
     public static $moneyUnitMap = [
-        '圆',
+        ['圆', '元'],
         '角',
         '分',
         '厘',
@@ -48,7 +48,13 @@ class Memory implements BaseInterface
         $length = mb_strlen($text);
         $number = $partNumber = $lastNum = $decimal = 0;
         $pom = 1; // 正数或负数，1或-1
-        $isDecimal = false === strpos($text, static::$moneyUnitMap[0]);
+        $isContain = array_filter(static::$moneyUnitMap[0], function ($moneyUnit) use($text) {
+            return strpos($text, $moneyUnit);
+        });
+        $flattenMoneyUnitMap = array_reduce(static::$moneyUnitMap, function ($result, $value) {
+            return array_merge($result, is_array($value) ? $value : [$value]);
+        },[]);
+        $isDecimal = !$isContain;
         $scale = count(static::$moneyUnitMap) - 1;
 
         $lastKey = -1;
@@ -68,7 +74,7 @@ class Memory implements BaseInterface
             {
                 ++$i;
                 $unit = mb_substr($text, $i, 1);
-                $unitKey = array_search($unit, static::$moneyUnitMap);
+                $unitKey = array_search($unit, $flattenMoneyUnitMap) - 1;
                 if(false === $unitKey)
                 {
                     --$i;
@@ -85,7 +91,7 @@ class Memory implements BaseInterface
 
                 if(false === $key)
                 {
-                    $key = array_search($char, static::$moneyUnitMap);
+                    $key = array_search($char, $flattenMoneyUnitMap) - 1;
                     if(false !== $key)
                     {
                         $isDecimal = true;
@@ -288,7 +294,7 @@ class Memory implements BaseInterface
         }
         if('' !== $result)
         {
-            $result .= static::$moneyUnitMap[0];
+            $result .= static::$moneyUnitMap[0][0];
         }
         return $result;
     }
