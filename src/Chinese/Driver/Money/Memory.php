@@ -54,7 +54,7 @@ class Memory implements BaseInterface
         $flattenMoneyUnitMap = array_reduce(static::$moneyUnitMap, function ($result, $value) {
             return array_merge($result, is_array($value) ? $value : [$value]);
         },[]);
-        $isDecimal = !!$isContain;
+        $isDecimal = !$isContain;
         $scale = count(static::$moneyUnitMap) - 1;
 
         $lastKey = -1;
