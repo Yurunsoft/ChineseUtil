@@ -328,6 +328,8 @@ abstract class BaseTest extends TestCase
         $this->assertEquals([
             '一 xi 二 an 三',
         ], Chinese::splitPinyin('一xi二an三'));
+
+        $this->assertEquals([], Chinese::splitPinyin(''));
     }
 
     /**

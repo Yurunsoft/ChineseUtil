@@ -36,6 +36,10 @@ class Memory implements BaseInterface
      */
     public function split($text, $wordSplit = ' ')
     {
+        if ('' === $text)
+        {
+            return [];
+        }
         $this->parseBlock($text, $beginMaps, $endMaps, $length);
         if (!isset($beginMaps[0]))
         {
