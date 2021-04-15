@@ -35,7 +35,7 @@ trait JSONInit
             }
             elseif (empty(Chinese::$option['pinyinSoundDataPath']))
             {
-                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(\dirname(__DIR__, 3) . '/data/pinyinData.json'), true)['sound'];
+                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(\dirname(\dirname(\dirname(__DIR__))) . '/data/pinyinData.json'), true)['sound'];
             }
             else
             {
