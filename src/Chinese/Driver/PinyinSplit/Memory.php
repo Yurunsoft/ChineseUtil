@@ -17,7 +17,7 @@ class Memory implements BaseInterface
             }
             elseif (empty(Chinese::$option['pinyinSplitDataPath']))
             {
-                Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(\dirname(__DIR__, 4) . '/data/pinyinData.json'), true)['split'];
+                Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(\dirname(\dirname(\dirname(\dirname(__DIR__)))) . '/data/pinyinData.json'), true)['split'];
             }
             else
             {

@@ -16,7 +16,7 @@ trait JSONInit
             }
             elseif (empty(Chinese::$option['charsDataPath']))
             {
-                Chinese::$chineseData['chars'] = json_decode(file_get_contents(\dirname(__DIR__, 3) . '/data/charsData.json'), true);
+                Chinese::$chineseData['chars'] = json_decode(file_get_contents(\dirname(\dirname(\dirname(\dirname(__DIR__)))) . '/data/charsData.json'), true);
             }
             else
             {
