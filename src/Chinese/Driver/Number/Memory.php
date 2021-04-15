@@ -1,21 +1,22 @@
 <?php
+
 namespace Yurun\Util\Chinese\Driver\Number;
 
 class Memory implements BaseInterface
 {
     public static $numberMap = [
-        0   =>  '零',
-        1   =>  '一',
-        2   =>  '二',
-        3   =>  '三',
-        4   =>  '四',
-        5   =>  '五',
-        6   =>  '六',
-        7   =>  '七',
-        8   =>  '八',
-        9   =>  '九',
-        '-' =>  '负',
-        '.' =>  '点',
+        0   => '零',
+        1   => '一',
+        2   => '二',
+        3   => '三',
+        4   => '四',
+        5   => '五',
+        6   => '六',
+        7   => '七',
+        8   => '八',
+        9   => '九',
+        '-' => '负',
+        '.' => '点',
     ];
 
     public static $unitMap = [
@@ -29,9 +30,10 @@ class Memory implements BaseInterface
     ];
 
     /**
-     * 中文口语化数字转数字
+     * 中文口语化数字转数字.
      *
      * @param string $text
+     *
      * @return string
      */
     public function toNumber($text)
@@ -42,35 +44,35 @@ class Memory implements BaseInterface
         $lastNum = 0;
         $isDecimal = false;
         $decimal = '';
-        for($i = 0; $i < $length; ++$i)
+        for ($i = 0; $i < $length; ++$i)
         {
             $char = mb_substr($text, $i, 1);
-            if(0 === $i && static::$numberMap['-'] === $char)
+            if (0 === $i && static::$numberMap['-'] === $char)
             {
                 $pom = -1;
                 continue;
             }
-            if(static::$numberMap['.'] === $char)
+            if (static::$numberMap['.'] === $char)
             {
                 $isDecimal = true;
                 continue;
             }
             $key = array_search($char, static::$numberMap);
-            if(false === $key)
+            if (false === $key)
             {
                 $key = array_search($char, static::$unitMap);
-                if(false === $key)
+                if (false === $key)
                 {
                     throw new \InvalidArgumentException(sprintf('%s is not a valied chinese number text', $text));
                 }
 
-                if(0 === $key && 0 === $lastNum)
+                if (0 === $key && 0 === $lastNum)
                 {
                     $lastNum = 1;
                 }
 
                 // 单位
-                if($key >= 3)
+                if ($key >= 3)
                 {
                     $partNumber += $lastNum;
                     $number += $partNumber * bcpow(10, (($key - 3) * 4) + 4);
@@ -86,7 +88,7 @@ class Memory implements BaseInterface
             else
             {
                 // 数字
-                if($isDecimal)
+                if ($isDecimal)
                 {
                     $decimal .= $key;
                 }
@@ -96,26 +98,28 @@ class Memory implements BaseInterface
                 }
             }
         }
+
         return bcmul(bcadd($number, bcadd($partNumber, $lastNum)), $pom) . ($isDecimal ? ('.' . $decimal) : '');
     }
 
     /**
-     * 数字转为中文口语化数字
+     * 数字转为中文口语化数字.
      *
      * @param string $number
-     * @param array $options
+     * @param array  $options
+     *
      * @return string
      */
     public function toChinese($number, $options = [])
     {
-        if(!static::verifyNumber($number))
+        if (!static::verifyNumber($number))
         {
             throw new \InvalidArgumentException(sprintf('%s is not a valied number', $number));
         }
 
         list($integer, $decimal) = explode('.', $number . '.');
 
-        if($integer < 0)
+        if ($integer < 0)
         {
             $pom = static::$numberMap['-'];
             $integer = abs($integer);
@@ -125,7 +129,7 @@ class Memory implements BaseInterface
             $pom = '';
         }
         $integerPart = static::parseInteger($integer, $options);
-        if('' === $integerPart)
+        if ('' === $integerPart)
         {
             $integerPart = static::$numberMap[0];
         }
@@ -138,7 +142,8 @@ class Memory implements BaseInterface
      * 验证数值
      *
      * @param string $number
-     * @return boolean
+     *
+     * @return bool
      */
     public static function verifyNumber($number)
     {
@@ -146,10 +151,11 @@ class Memory implements BaseInterface
     }
 
     /**
-     * 处理整数部分
+     * 处理整数部分.
      *
      * @param string $number
-     * @param array $options
+     * @param array  $options
+     *
      * @return string
      */
     private static function parseInteger($number, $options)
@@ -158,11 +164,11 @@ class Memory implements BaseInterface
         $tenMin = isset($options['tenMin']) ? $options['tenMin'] : false;
 
         // 准备数据，分割为4个数字一组
-        $length = strlen($number);
+        $length = \strlen($number);
         // 同 % 4
         $firstItems = $length & 3;
         $leftStr = substr($number, $firstItems);
-        if('' === $leftStr || false === $leftStr)
+        if ('' === $leftStr || false === $leftStr)
         {
             $split4 = [];
         }
@@ -170,14 +176,14 @@ class Memory implements BaseInterface
         {
             $split4 = str_split($leftStr, 4);
         }
-        if($firstItems > 0)
+        if ($firstItems > 0)
         {
             array_unshift($split4, substr($number, 0, $firstItems));
         }
-        $split4Count = count($split4);
+        $split4Count = \count($split4);
 
         $unitIndex = ($length - 1) / 4 >> 0;
-        if(0 === $unitIndex)
+        if (0 === $unitIndex)
         {
             $unitIndex = -1;
         }
@@ -187,64 +193,67 @@ class Memory implements BaseInterface
         }
 
         $result = '';
-        foreach($split4 as $i => $item)
+        foreach ($split4 as $i => $item)
         {
             $index = $unitIndex - $i;
 
-            $length = strlen($item);
+            $length = \strlen($item);
 
             $itemResult = '';
             $has0 = false;
-            for($j = 0; $j < $length; ++$j)
+            for ($j = 0; $j < $length; ++$j)
             {
-                if(0 == $item[$j])
+                if (0 == $item[$j])
                 {
                     $has0 = true;
                 }
                 else
                 {
-                    if($has0)
+                    if ($has0)
                     {
                         $itemResult .= static::$numberMap[0];
                         $has0 = false;
                     }
-                    if(!($tenMin && 2 === $length && 0 === $j && 1 == $item[$j]))
+                    if (!($tenMin && 2 === $length && 0 === $j && 1 == $item[$j]))
                     {
                         $itemResult .= static::$numberMap[$item[$j]];
                     }
-                    if(0 != $item[$j])
+                    if (0 != $item[$j])
                     {
                         $itemResult .= (isset(static::$unitMap[$length - $j - 2]) ? static::$unitMap[$length - $j - 2] : '');
                     }
                 }
             }
-            if('' != $itemResult)
+            if ('' != $itemResult)
             {
                 $result .= $itemResult . (($i != $split4Count - 1 && isset(static::$unitMap[$index])) ? static::$unitMap[$index] : '');
             }
         }
+
         return $result;
     }
 
     /**
-     * 处理小数部分
+     * 处理小数部分.
      *
      * @param string $number
-     * @param array $options
+     * @param array  $options
+     *
      * @return string
      */
     private static function parseDecimal($number, $options)
     {
-        if('' === $number)
+        if ('' === $number)
         {
             return '';
         }
         $result = static::$numberMap['.'];
-        $length = strlen($number);
-        for($i = 0; $i < $length; ++$i)
+        $length = \strlen($number);
+        for ($i = 0; $i < $length; ++$i)
         {
             $result .= static::$numberMap[$number[$i]];
         }
+
         return $result;
     }
 }

@@ -1,10 +1,11 @@
 <?php
 /**
- * 拼音分词示例
+ * 拼音分词示例.
  */
+
 namespace Yurun\Util;
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-use \Yurun\Util\Chinese\Pinyin;
+
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 $time = microtime(true);
 $mem1 = memory_get_usage();
@@ -22,9 +23,9 @@ $mem1 = memory_get_usage();
 
 // 拼音分词
 $string2 = 'xianggang';
-echo '"', $string2, '"的分词结果：', PHP_EOL;
+echo '"', $string2, '"的分词结果：', \PHP_EOL;
 var_dump(Chinese::splitPinyin($string2));
 
-echo '当前模式:', Chinese::getMode(), PHP_EOL;
-echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), PHP_EOL;
-echo '耗时:', microtime(true) - $time, 's', PHP_EOL;
+echo '当前模式:', Chinese::getMode(), \PHP_EOL;
+echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), \PHP_EOL;
+echo '耗时:', microtime(true) - $time, 's', \PHP_EOL;

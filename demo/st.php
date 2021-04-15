@@ -1,10 +1,11 @@
 <?php
 /**
- * 汉字简繁互转示例
+ * 汉字简繁互转示例.
  */
+
 namespace Yurun\Util;
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-use \Yurun\Util\Chinese\Pinyin;
+
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 $time = microtime(true);
 $mem1 = memory_get_usage();
@@ -22,11 +23,11 @@ $mem1 = memory_get_usage();
 
 // 简繁互转
 $string3 = '中华人民共和国！恭喜發財！';
-echo '"', $string3, '"的简体转换：', PHP_EOL;
+echo '"', $string3, '"的简体转换：', \PHP_EOL;
 var_dump(Chinese::toSimplified($string3));
-echo '"', $string3, '"的繁体转换：', PHP_EOL;
+echo '"', $string3, '"的繁体转换：', \PHP_EOL;
 var_dump(Chinese::toTraditional($string3));
 
-echo '当前模式:', Chinese::getMode(), PHP_EOL;
-echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), PHP_EOL;
-echo '耗时:', microtime(true) - $time, 's', PHP_EOL;
+echo '当前模式:', Chinese::getMode(), \PHP_EOL;
+echo '开始内存:', $mem1, '; 结束内存:', memory_get_usage(), '; 峰值内存:', memory_get_peak_usage(), \PHP_EOL;
+echo '耗时:', microtime(true) - $time, 's', \PHP_EOL;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test\Number;
 
 /**
@@ -7,10 +8,9 @@ namespace Yurun\Util\ChineseUtil\Test\Number;
 class MemoryNumberTest extends BaseNumberTest
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
     protected $mode = 'Memory';
-
 }

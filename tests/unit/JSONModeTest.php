@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test;
 
 /**
@@ -7,10 +8,9 @@ namespace Yurun\Util\ChineseUtil\Test;
 class JSONModeTest extends BaseTest
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
     protected $mode = 'JSON';
-
 }

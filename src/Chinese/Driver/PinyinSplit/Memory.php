@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese\Driver\PinyinSplit;
 
 use Yurun\Util\Chinese;
@@ -8,15 +9,15 @@ class Memory implements BaseInterface
     public function __construct()
     {
         // 拼音分词数据加载
-        if(!isset(Chinese::$option['pinyinSplitData']))
+        if (!isset(Chinese::$option['pinyinSplitData']))
         {
-            if(!empty(Chinese::$option['pinyinSplitData']))
+            if (!empty(Chinese::$option['pinyinSplitData']))
             {
                 Chinese::$chineseData['pinyin'] = Chinese::$option['pinyinSplitData'];
             }
-            else if(empty(Chinese::$option['pinyinSplitDataPath']))
+            elseif (empty(Chinese::$option['pinyinSplitDataPath']))
             {
-                Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(dirname(dirname(dirname(dirname(__DIR__)))) . '/data/pinyinData.json'), true)['split'];
+                Chinese::$chineseData['pinyin'] = json_decode(file_get_contents(\dirname(__DIR__, 4) . '/data/pinyinData.json'), true)['split'];
             }
             else
             {
@@ -26,56 +27,57 @@ class Memory implements BaseInterface
     }
 
     /**
-     * 拼音分词
+     * 拼音分词.
      *
-     * @param string $text
+     * @param string      $text
      * @param string|null $wordSplit
+     *
      * @return array
      */
     public function split($text, $wordSplit = ' ')
     {
         $this->parseBlock($text, $beginMaps, $endMaps, $length);
-        if(!isset($beginMaps[0]))
+        if (!isset($beginMaps[0]))
         {
             throw new \RuntimeException('Data error');
         }
         $result = [];
         $stacks = [
             [
-                'index'     =>  0,
-                'result'    =>  [[]],
-            ]
+                'index'     => 0,
+                'result'    => [[]],
+            ],
         ];
-        while($stacks)
+        while ($stacks)
         {
             $stack = array_pop($stacks);
             $index = $stack['index'];
-            if(!isset($beginMaps[$index]))
+            if (!isset($beginMaps[$index]))
             {
                 throw new \RuntimeException('Index value error');
             }
-            foreach($beginMaps[$index] as $item)
+            foreach ($beginMaps[$index] as $item)
             {
-                if(!$item['isPinyin'] && isset($endMaps[$index]))
+                if (!$item['isPinyin'] && isset($endMaps[$index]))
                 {
                     continue;
                 }
                 $itemNextIndex = $item['end'] + 1;
-                if(!isset($beginMaps[$itemNextIndex]) && $itemNextIndex < $length - 1)
+                if (!isset($beginMaps[$itemNextIndex]) && $itemNextIndex < $length - 1)
                 {
                     continue;
                 }
                 $itemResult = [];
-                foreach($stack['result'] as $resultItem)
+                foreach ($stack['result'] as $resultItem)
                 {
                     $resultItem[] = $item['text'];
                     $itemResult[] = $resultItem;
                 }
-                if($itemNextIndex < $length)
+                if ($itemNextIndex < $length)
                 {
                     $stacks[] = [
-                        'index'     =>  $itemNextIndex,
-                        'result'    =>  $itemResult,
+                        'index'     => $itemNextIndex,
+                        'result'    => $itemResult,
                     ];
                 }
                 else
@@ -84,22 +86,23 @@ class Memory implements BaseInterface
                 }
             }
         }
-        if(null !== $wordSplit)
+        if (null !== $wordSplit)
         {
-            foreach($result as &$item)
+            foreach ($result as &$item)
             {
                 $item = implode($wordSplit, $item);
             }
         }
+
         return $result;
     }
 
     private function parseBlock($text, &$beginMaps, &$endMaps, &$length)
     {
         // 把每个连续的拼音连成块
-        $blocks = preg_split('/([^a-zA-Z]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $blocks = preg_split('/([^a-zA-Z]+)/', $text, null, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $hasNoPinyinChars = isset($blocks[1]);
-        if($hasNoPinyinChars)
+        if ($hasNoPinyinChars)
         {
             $oddIsPinyin = preg_match('/^([a-zA-Z]+)$/', $blocks[0]) > 0;
         }
@@ -109,44 +112,44 @@ class Memory implements BaseInterface
         $length = 0;
         $beginMaps = $endMaps = [];
         // 遍历每个块
-        foreach($blocks as $blockIndex => $block)
+        foreach ($blocks as $blockIndex => $block)
         {
             $blockLength = mb_strlen($block, 'UTF-8');
-            if($hasNoPinyinChars)
+            if ($hasNoPinyinChars)
             {
                 $blockIndexIsOdd = (1 === ($blockIndex & 1));
-                if($oddIsPinyin === $blockIndexIsOdd)
+                if ($oddIsPinyin === $blockIndexIsOdd)
                 {
                     $begin = $length;
                     $length += $blockLength;
                     $beginMaps[$begin][] = [
-                        'text'      =>  $block,
-                        'isPinyin'  =>  false,
-                        'relation'  =>  null,
-                        'begin'     =>  $begin,
-                        'end'       =>  $length - 1,
+                        'text'      => $block,
+                        'isPinyin'  => false,
+                        'relation'  => null,
+                        'begin'     => $begin,
+                        'end'       => $length - 1,
                     ];
                     continue;
                 }
             }
             $tempBlockResults = [];
             // 遍历每个字
-            for($i = 0; $i < $blockLength; ++$i)
+            for ($i = 0; $i < $blockLength; ++$i)
             {
                 $character = mb_substr($block, $i, 1, 'UTF-8');
-                foreach(array_keys($tempBlockResults) as $j)
+                foreach (array_keys($tempBlockResults) as $j)
                 {
                     $tempBlockResultItem = &$tempBlockResults[$j];
                     $relation = &$tempBlockResultItem['relation'];
-                    if(isset($relation[$character]))
+                    if (isset($relation[$character]))
                     {
-                        if($tempBlockResultItem['isPinyin'])
+                        if ($tempBlockResultItem['isPinyin'])
                         {
                             $tempBlockResultItem2 = $tempBlockResultItem;
                             $tempBlockResultItem2['end'] = $end = $length + $i - 1;
                             unset($tempBlockResultItem2['relation']);
                             $beginMaps[$tempBlockResultItem2['begin']][] = $tempBlockResultItem2;
-                            if($tempBlockResultItem2['isPinyin'])
+                            if ($tempBlockResultItem2['isPinyin'])
                             {
                                 $endMaps[$end] = true;
                             }
@@ -161,7 +164,7 @@ class Memory implements BaseInterface
                         $tempBlockResultItem['end'] = $end = $length + $i - 1;
                         unset($tempBlockResultItem['relation']);
                         $beginMaps[$tempBlockResultItem['begin']][] = $tempBlockResultItem;
-                        if($tempBlockResultItem['isPinyin'])
+                        if ($tempBlockResultItem['isPinyin'])
                         {
                             $endMaps[$end] = true;
                         }
@@ -170,21 +173,21 @@ class Memory implements BaseInterface
                     unset($tempBlockResultItem, $relation);
                 }
                 $tempBlockResults[] = [
-                    'text'      =>  $character,
-                    'isPinyin'  =>  isset($relationList[$character]['py']),
-                    'relation'  =>  &$relationList[$character],
-                    'begin'     =>  $length + $i,
+                    'text'      => $character,
+                    'isPinyin'  => isset($relationList[$character]['py']),
+                    'relation'  => &$relationList[$character],
+                    'begin'     => $length + $i,
                 ];
             }
-            if($tempBlockResults)
+            if ($tempBlockResults)
             {
-                foreach($tempBlockResults as $tempBlockResultItem)
+                foreach ($tempBlockResults as $tempBlockResultItem)
                 {
                     // 保存
                     $tempBlockResultItem['end'] = $end = $length + $i - 1;
                     unset($tempBlockResultItem['relation']);
                     $beginMaps[$tempBlockResultItem['begin']][] = $tempBlockResultItem;
-                    if($tempBlockResultItem['isPinyin'])
+                    if ($tempBlockResultItem['isPinyin'])
                     {
                         $endMaps[$end] = true;
                     }
@@ -192,6 +195,5 @@ class Memory implements BaseInterface
             }
             $length += $blockLength;
         }
-
     }
 }

@@ -1,14 +1,15 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test;
 
+use PHPUnit\Framework\TestCase;
 use Yurun\Util\Chinese;
 use Yurun\Util\Chinese\Pinyin;
-use PHPUnit\Framework\TestCase;
 
 abstract class BaseTest extends TestCase
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
@@ -16,7 +17,6 @@ abstract class BaseTest extends TestCase
 
     protected function check()
     {
-
     }
 
     public function testMode()
@@ -34,60 +34,56 @@ abstract class BaseTest extends TestCase
     public function testPinyin1()
     {
         $this->check();
-        $this->assertEquals(array (
-          'pinyin' =>
-          array (
-            array (
-              'gong',
-              'xi',
-              'fa',
-              'cai',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-          'pinyinSound' =>
-          array (
-            array (
-              'gōng',
-              'xǐ',
-              'fā',
-              'cái',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-          'pinyinSoundNumber' =>
-          array (
-            array (
-              'gong1',
-              'xi3',
-              'fa1',
-              'cai2',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-          'pinyinFirst' =>
-          array (
-            array (
-              'g',
-              'x',
-              'f',
-              'c',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-        ), Chinese::toPinyin('恭喜發財！123'));
+        $this->assertEquals([
+            'pinyin' => [
+                [
+                    'gong',
+                    'xi',
+                    'fa',
+                    'cai',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+            'pinyinSound' => [
+                [
+                    'gōng',
+                    'xǐ',
+                    'fā',
+                    'cái',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+            'pinyinSoundNumber' => [
+                [
+                    'gong1',
+                    'xi3',
+                    'fa1',
+                    'cai2',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+            'pinyinFirst' => [
+                [
+                    'g',
+                    'x',
+                    'f',
+                    'c',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+        ], Chinese::toPinyin('恭喜發財！123'));
     }
 
     /**
@@ -98,56 +94,52 @@ abstract class BaseTest extends TestCase
     public function testPinyin2()
     {
         $this->check();
-        $this->assertEquals(array (
-          'pinyin' =>
-          array (
-            array (
-              'wo',
-              'di',
-            ),
-            array (
-              'wo',
-              'de',
-            ),
-          ),
-          'pinyinSound' =>
-          array (
-            array (
-              'wǒ',
-              'dí',
-            ),
-            array (
-              'wǒ',
-              'dì',
-            ),
-            array (
-              'wǒ',
-              'de',
-            ),
-          ),
-          'pinyinSoundNumber' =>
-          array (
-            array (
-              'wo3',
-              'di2',
-            ),
-            array (
-              'wo3',
-              'di4',
-            ),
-            array (
-              'wo3',
-              'de0',
-            ),
-          ),
-          'pinyinFirst' =>
-          array (
-            array (
-              'w',
-              'd',
-            ),
-          ),
-        ), Chinese::toPinyin('我的'));
+        $this->assertEquals([
+            'pinyin' => [
+                [
+                    'wo',
+                    'di',
+                ],
+                [
+                    'wo',
+                    'de',
+                ],
+            ],
+            'pinyinSound' => [
+                [
+                    'wǒ',
+                    'dí',
+                ],
+                [
+                    'wǒ',
+                    'dì',
+                ],
+                [
+                    'wǒ',
+                    'de',
+                ],
+            ],
+            'pinyinSoundNumber' => [
+                [
+                    'wo3',
+                    'di2',
+                ],
+                [
+                    'wo3',
+                    'di4',
+                ],
+                [
+                    'wo3',
+                    'de0',
+                ],
+            ],
+            'pinyinFirst' => [
+                [
+                    'w',
+                    'd',
+                ],
+            ],
+        ], Chinese::toPinyin('我的'));
     }
 
     /**
@@ -158,20 +150,19 @@ abstract class BaseTest extends TestCase
     public function testPinyinAll()
     {
         $this->check();
-        $this->assertEquals(array (
-          'pinyin' =>
-          array (
-            array (
-              'gong',
-              'xi',
-              'fa',
-              'cai',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          )), Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN));
+        $this->assertEquals([
+            'pinyin' => [
+                [
+                    'gong',
+                    'xi',
+                    'fa',
+                    'cai',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ], ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN));
     }
 
     /**
@@ -182,21 +173,20 @@ abstract class BaseTest extends TestCase
     public function testPinyinFirst()
     {
         $this->check();
-        $this->assertEquals(array(
-          'pinyinFirst' =>
-          array (
-            array (
-              'g',
-              'x',
-              'f',
-              'c',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-        ), Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_FIRST));
+        $this->assertEquals([
+            'pinyinFirst' => [
+                [
+                    'g',
+                    'x',
+                    'f',
+                    'c',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+        ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_FIRST));
     }
 
     /**
@@ -207,21 +197,20 @@ abstract class BaseTest extends TestCase
     public function testPinyinSound()
     {
         $this->check();
-        $this->assertEquals(array(
-          'pinyinSound' =>
-          array (
-            array (
-              'gōng',
-              'xǐ',
-              'fā',
-              'cái',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-        ), Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_SOUND));
+        $this->assertEquals([
+            'pinyinSound' => [
+                [
+                    'gōng',
+                    'xǐ',
+                    'fā',
+                    'cái',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+        ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_SOUND));
     }
 
     /**
@@ -232,21 +221,20 @@ abstract class BaseTest extends TestCase
     public function testPinyinSoundNumber()
     {
         $this->check();
-        $this->assertEquals(array(
-          'pinyinSoundNumber' =>
-          array (
-            array (
-              'gong1',
-              'xi3',
-              'fa1',
-              'cai2',
-              '！',
-              '1',
-              '2',
-              '3',
-            ),
-          ),
-        ), Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER));
+        $this->assertEquals([
+            'pinyinSoundNumber' => [
+                [
+                    'gong1',
+                    'xi3',
+                    'fa1',
+                    'cai2',
+                    '！',
+                    '1',
+                    '2',
+                    '3',
+                ],
+            ],
+        ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER));
     }
 
     /**
@@ -257,15 +245,13 @@ abstract class BaseTest extends TestCase
     public function testPinyinCustom()
     {
         $this->check();
-        $this->assertEquals(array (
-          'pinyin' =>
-          array (
-            'gong xi fa cai ！ 1 2 3',
-          ),
-          'pinyinSoundNumber' =>
-          array (
-            'gong1 xi3 fa1 cai2 ！ 1 2 3',
-          )), Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER, ' '));
+        $this->assertEquals([
+            'pinyin' => [
+                'gong xi fa cai ！ 1 2 3',
+            ],
+            'pinyinSoundNumber' => [
+                'gong1 xi3 fa1 cai2 ！ 1 2 3',
+            ], ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN | Pinyin::CONVERT_MODE_PINYIN_SOUND_NUMBER, ' '));
     }
 
     /**
@@ -276,11 +262,11 @@ abstract class BaseTest extends TestCase
     public function testPinyinSplitNoPinyin()
     {
         $this->check();
-        $this->assertEquals(array(
-          'pinyin'  =>  array(
-            'gong-xi-fa-cai-！-1-2-3',
-          ),
-        ), Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN, '-'));
+        $this->assertEquals([
+            'pinyin'  => [
+                'gong-xi-fa-cai-！-1-2-3',
+            ],
+        ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN, '-'));
     }
 
     /**
@@ -291,11 +277,11 @@ abstract class BaseTest extends TestCase
     public function testPinyinNotSplitNoPinyin()
     {
         $this->check();
-        $this->assertEquals(array(
-          'pinyin'  =>  array(
-            'gong-xi-fa-cai-！123',
-          ),
-        ) , Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN, '-', false));
+        $this->assertEquals([
+            'pinyin'  => [
+                'gong-xi-fa-cai-！123',
+            ],
+        ], Chinese::toPinyin('恭喜發財！123', Pinyin::CONVERT_MODE_PINYIN, '-', false));
     }
 
     /**
@@ -319,26 +305,26 @@ abstract class BaseTest extends TestCase
         $this->assertEquals([
             's b te lang pu s b',
         ], Chinese::splitPinyin('sbtelangpusb'));
-    
+
         $this->assertEquals([
             '啊 xian',
             '啊 xi an',
         ], Chinese::splitPinyin('啊xian'));
-    
+
         $this->assertEquals([
             'xi 啊 an',
         ], Chinese::splitPinyin('xi啊an'));
-    
+
         $this->assertEquals([
             'xian 啊',
             'xi an 啊',
         ], Chinese::splitPinyin('xian啊'));
-    
+
         $this->assertEquals([
             '一 xian 二',
             '一 xi an 二',
         ], Chinese::splitPinyin('一xian二'));
-    
+
         $this->assertEquals([
             '一 xi 二 an 三',
         ], Chinese::splitPinyin('一xi二an三'));
@@ -357,5 +343,4 @@ abstract class BaseTest extends TestCase
         $this->assertEquals([$traditional, '中華人民共和國！恭喜髮財！'], Chinese::toTraditional($simplified));
         $this->assertEquals([$simplified], Chinese::toSimplified($traditional));
     }
-
 }

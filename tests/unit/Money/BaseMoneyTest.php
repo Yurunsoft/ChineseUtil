@@ -1,9 +1,10 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test\Money;
 
+use PHPUnit\Framework\TestCase;
 use Yurun\Util\Chinese;
 use Yurun\Util\Chinese\Money;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @testdox 中文金额转换
@@ -11,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 abstract class BaseMoneyTest extends TestCase
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
@@ -19,7 +20,6 @@ abstract class BaseMoneyTest extends TestCase
 
     protected function check()
     {
-
     }
 
     public function testMode()
@@ -75,5 +75,4 @@ abstract class BaseMoneyTest extends TestCase
         $this->assertEquals('壹拾贰圆', Money::toChinese('12.0'));
         $this->assertEquals('壹拾贰圆', Money::toChinese('12.00'));
     }
-
 }

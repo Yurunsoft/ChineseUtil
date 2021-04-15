@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese;
 
 use Yurun\Util\Chinese;
@@ -6,23 +7,25 @@ use Yurun\Util\Chinese;
 class PinyinSplit
 {
     /**
-     * 拼音分词处理器
+     * 拼音分词处理器.
+     *
      * @var \Yurun\Util\Chinese\Driver\PinyinSplit\BaseInterface
      */
     public static $handler;
 
     /**
-     * 处理器的模式
+     * 处理器的模式.
      *
      * @var string
      */
     private static $handlerMode = 'Memory';
 
     /**
-     * 拼音分词
+     * 拼音分词.
      *
-     * @param string $text
+     * @param string      $text
      * @param string|null $wordSplit
+     *
      * @return array
      */
     public static function split($text, $wordSplit = ' ')
@@ -31,15 +34,16 @@ class PinyinSplit
     }
 
     /**
-     * 获取拼音处理器
+     * 获取拼音处理器.
+     *
      * @return \Yurun\Util\Chinese\Driver\PinyinSplit\BaseInterface
      */
     protected static function getHandler()
     {
         $mode = Chinese::getMode();
-        if(null === static::$handler || $mode !== static::$handlerMode)
+        if (null === static::$handler || $mode !== static::$handlerMode)
         {
-            if(null === $mode)
+            if (null === $mode)
             {
                 $mode = static::$handlerMode;
             }
@@ -47,7 +51,7 @@ class PinyinSplit
             {
                 static::$handlerMode = $mode;
             }
-            if(in_array($mode, [
+            if (\in_array($mode, [
                 'JSON',
                 'Memory',
                 'SQLite',
@@ -59,8 +63,9 @@ class PinyinSplit
             {
                 $className = '\Yurun\Util\Chinese\Driver\PinyinSplit\\' . $mode;
             }
-            static::$handler = new $className;
+            static::$handler = new $className();
         }
+
         return static::$handler;
     }
 }

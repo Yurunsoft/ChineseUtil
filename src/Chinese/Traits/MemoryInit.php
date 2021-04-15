@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese\Traits;
 
 use Yurun\Util\Chinese;
@@ -9,7 +10,7 @@ trait MemoryInit
     protected function initData()
     {
         SQLiteData::init();
-        if(!isset(Chinese::$chineseData['chars']))
+        if (!isset(Chinese::$chineseData['chars']))
         {
             $data = SQLiteData::getAllData();
             $this->parseData($data);
@@ -18,13 +19,14 @@ trait MemoryInit
     }
 
     /**
-     * 处理数据
+     * 处理数据.
+     *
      * @param array $array
      */
     protected function parseData(&$array)
     {
-        $s = count($array);
-        for($i = 0; $i < $s; ++$i)
+        $s = \count($array);
+        for ($i = 0; $i < $s; ++$i)
         {
             $char = $array[$i]['char'];
             unset($array[$i]['char']);

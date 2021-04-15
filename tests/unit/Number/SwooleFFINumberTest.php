@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test\Number;
 
 /**
@@ -7,7 +8,7 @@ namespace Yurun\Util\ChineseUtil\Test\Number;
 class SwooleFFINumberTest extends BaseNumberTest
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
@@ -15,22 +16,21 @@ class SwooleFFINumberTest extends BaseNumberTest
 
     protected function check()
     {
-        if('0' === getenv('CHINESE_UTIL_FFI'))
+        if ('0' === getenv('CHINESE_UTIL_FFI'))
         {
             $this->markTestSkipped('Not test FFI');
         }
-        if(version_compare(PHP_VERSION, '7.4', '<'))
+        if (version_compare(\PHP_VERSION, '7.4', '<'))
         {
             $this->markTestSkipped('PHP need >= 7.4');
         }
-        if(!extension_loaded('FFI'))
+        if (!\extension_loaded('FFI'))
         {
             $this->markTestSkipped('You must enable FFI extension');
         }
-        if(!extension_loaded('Swoole'))
+        if (!\extension_loaded('Swoole'))
         {
             $this->markTestSkipped('You must enable Swoole extension');
         }
     }
-
 }

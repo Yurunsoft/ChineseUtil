@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese\Driver\SimplifiedTraditional;
 
 use Yurun\Util\Chinese\FFIDriver;
@@ -11,8 +12,10 @@ class FFI implements BaseInterface
     }
 
     /**
-     * 繁体转简体
+     * 繁体转简体.
+     *
      * @param string $string
+     *
      * @return array
      */
     public function toSimplified($string)
@@ -21,13 +24,14 @@ class FFI implements BaseInterface
     }
 
     /**
-     * 简体转繁体
+     * 简体转繁体.
+     *
      * @param string $string
+     *
      * @return array
      */
     public function toTraditional($string)
     {
         return convert_to_traditional($string);
     }
-
 }

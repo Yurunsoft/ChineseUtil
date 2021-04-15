@@ -1,13 +1,14 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test\Money;
 
 /**
  * @testdox SwooleFFI Mode 中文金额转换
  */
-class SwooleFFIMoneyTest extends BaseMoneyTest
+class SwooleFFINumberTest extends BaseMoneyTest
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
@@ -15,22 +16,21 @@ class SwooleFFIMoneyTest extends BaseMoneyTest
 
     protected function check()
     {
-        if('0' === getenv('CHINESE_UTIL_FFI'))
+        if ('0' === getenv('CHINESE_UTIL_FFI'))
         {
             $this->markTestSkipped('Not test FFI');
         }
-        if(version_compare(PHP_VERSION, '7.4', '<'))
+        if (version_compare(\PHP_VERSION, '7.4', '<'))
         {
             $this->markTestSkipped('PHP need >= 7.4');
         }
-        if(!extension_loaded('FFI'))
+        if (!\extension_loaded('FFI'))
         {
             $this->markTestSkipped('You must enable FFI extension');
         }
-        if(!extension_loaded('Swoole'))
+        if (!\extension_loaded('Swoole'))
         {
             $this->markTestSkipped('You must enable Swoole extension');
         }
     }
-
 }

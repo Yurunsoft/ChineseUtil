@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese\Traits;
 
 use Yurun\Util\Chinese;
@@ -7,15 +8,15 @@ trait JSONInit
 {
     protected function loadChars()
     {
-        if(!isset(Chinese::$chineseData['chars']))
+        if (!isset(Chinese::$chineseData['chars']))
         {
-            if(!empty(Chinese::$option['charsData']))
+            if (!empty(Chinese::$option['charsData']))
             {
                 Chinese::$chineseData['chars'] = Chinese::$option['charsData'];
             }
-            else if(empty(Chinese::$option['charsDataPath']))
+            elseif (empty(Chinese::$option['charsDataPath']))
             {
-                Chinese::$chineseData['chars'] = json_decode(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/data/charsData.json'), true);
+                Chinese::$chineseData['chars'] = json_decode(file_get_contents(\dirname(__DIR__, 3) . '/data/charsData.json'), true);
             }
             else
             {
@@ -26,15 +27,15 @@ trait JSONInit
 
     protected function loadPinyinSound()
     {
-        if(!isset(Chinese::$chineseData['pinyinSound']))
+        if (!isset(Chinese::$chineseData['pinyinSound']))
         {
-            if(!empty(Chinese::$option['pinyinSoundData']))
+            if (!empty(Chinese::$option['pinyinSoundData']))
             {
                 Chinese::$chineseData['pinyinSound'] = Chinese::$option['pinyinSoundData'];
             }
-            else if(empty(Chinese::$option['pinyinSoundDataPath']))
+            elseif (empty(Chinese::$option['pinyinSoundDataPath']))
             {
-                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(dirname(dirname(dirname(__DIR__))) . '/data/pinyinData.json'), true)['sound'];
+                Chinese::$chineseData['pinyinSound'] = json_decode(file_get_contents(\dirname(__DIR__, 3) . '/data/pinyinData.json'), true)['sound'];
             }
             else
             {

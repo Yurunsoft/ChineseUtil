@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese;
 
 abstract class Util

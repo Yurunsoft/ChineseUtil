@@ -1,4 +1,5 @@
 <?php
+
 namespace Yurun\Util\Chinese\Driver\Money;
 
 use Yurun\Util\Chinese\Util;
@@ -6,18 +7,18 @@ use Yurun\Util\Chinese\Util;
 class Memory implements BaseInterface
 {
     public static $numberMap = [
-        0   =>  '零',
-        1   =>  '壹',
-        2   =>  '贰',
-        3   =>  '叁',
-        4   =>  '肆',
-        5   =>  '伍',
-        6   =>  '陆',
-        7   =>  '柒',
-        8   =>  '捌',
-        9   =>  '玖',
-        '-' =>  '负',
-        '.' =>  '',
+        0   => '零',
+        1   => '壹',
+        2   => '贰',
+        3   => '叁',
+        4   => '肆',
+        5   => '伍',
+        6   => '陆',
+        7   => '柒',
+        8   => '捌',
+        9   => '玖',
+        '-' => '负',
+        '.' => '',
     ];
 
     public static $unitMap = [
@@ -37,45 +38,45 @@ class Memory implements BaseInterface
     ];
 
     /**
-     * 中文金额大写转数字
+     * 中文金额大写转数字.
      *
      * @param string $text
+     *
      * @return string
      */
     public function toNumber($text)
     {
-        
         $length = mb_strlen($text);
         $number = $partNumber = $lastNum = $decimal = 0;
         $pom = 1; // 正数或负数，1或-1
-        $isContain = array_filter(static::$moneyUnitMap[0], function ($moneyUnit) use($text) {
+        $isContain = array_filter(static::$moneyUnitMap[0], function ($moneyUnit) use ($text) {
             return strpos($text, $moneyUnit);
         });
         $flattenMoneyUnitMap = array_reduce(static::$moneyUnitMap, function ($result, $value) {
-            return array_merge($result, is_array($value) ? $value : [$value]);
-        },[]);
+            return array_merge($result, \is_array($value) ? $value : [$value]);
+        }, []);
         $isDecimal = !$isContain;
-        $scale = count(static::$moneyUnitMap) - 1;
+        $scale = \count(static::$moneyUnitMap) - 1;
 
         $lastKey = -1;
-        for($i = 0; $i < $length; ++$i)
+        for ($i = 0; $i < $length; ++$i)
         {
             $char = mb_substr($text, $i, 1);
-            if(0 === $i && static::$numberMap['-'] === $char)
+            if (0 === $i && static::$numberMap['-'] === $char)
             {
                 $pom = -1;
                 continue;
             }
 
             $key = array_search($char, static::$numberMap);
-           
+
             // 小数
-            if($isDecimal)
+            if ($isDecimal)
             {
                 ++$i;
                 $unit = mb_substr($text, $i, 1);
                 $unitKey = array_search($unit, $flattenMoneyUnitMap) - 1;
-                if(false === $unitKey)
+                if (false === $unitKey)
                 {
                     --$i;
                     $decimal .= $key;
@@ -85,14 +86,14 @@ class Memory implements BaseInterface
                     $decimal = bcadd($decimal, bcmul($key, bcpow(10, -($unitKey), $scale), $scale), $scale);
                 }
             }
-            else if(false === $key)
+            elseif (false === $key)
             {
                 $key = array_search($char, static::$unitMap);
 
-                if(false === $key)
+                if (false === $key)
                 {
                     $key = array_search($char, $flattenMoneyUnitMap) - 1;
-                    if(false !== $key)
+                    if (false !== $key)
                     {
                         $isDecimal = true;
                         continue;
@@ -101,7 +102,7 @@ class Memory implements BaseInterface
                 }
 
                 // 单位
-                if($key > 3)
+                if ($key > 3)
                 {
                     $tNumber = bcpow(10, (($key - 2) * 4));
                 }
@@ -110,14 +111,14 @@ class Memory implements BaseInterface
                     $tNumber = bcpow(10, $key + 1);
                 }
 
-                if(null === $lastNum)
+                if (null === $lastNum)
                 {
                     $lastNum = 1;
                 }
 
-                if($key > 3 || (3 === $key && $partNumber >= 10))
+                if ($key > 3 || (3 === $key && $partNumber >= 10))
                 {
-                    if($key < $lastKey)
+                    if ($key < $lastKey)
                     {
                         $number = bcadd($number, bcmul(bcadd($partNumber, $lastNum, $scale), $tNumber, $scale), $scale);
                     }
@@ -134,7 +135,6 @@ class Memory implements BaseInterface
                     $partNumber = bcadd($partNumber, bcmul($lastNum, $tNumber, $scale), $scale);
                     $lastNum = 0;
                 }
-
             }
             else
             {
@@ -142,7 +142,7 @@ class Memory implements BaseInterface
             }
         }
         $result = bcmul(bcadd(bcadd($number, bcadd($partNumber, $lastNum, $scale), $scale), $decimal, $scale), $pom, $scale);
-        if(false === strpos($result, '.'))
+        if (false === strpos($result, '.'))
         {
             return $result;
         }
@@ -153,22 +153,23 @@ class Memory implements BaseInterface
     }
 
     /**
-     * 数字转为中文金额大写
+     * 数字转为中文金额大写.
      *
      * @param string $number
-     * @param array $options
+     * @param array  $options
+     *
      * @return string
      */
     public function toChinese($number, $options = [])
     {
-        if(!static::verifyNumber($number))
+        if (!static::verifyNumber($number))
         {
             throw new \InvalidArgumentException(sprintf('%s is not a valied number', $number));
         }
 
         list($integer, $decimal) = explode('.', $number . '.');
 
-        if($integer < 0)
+        if ($integer < 0)
         {
             $pom = static::$numberMap['-'];
             $integer = abs($integer);
@@ -185,7 +186,8 @@ class Memory implements BaseInterface
      * 验证数值
      *
      * @param string $number
-     * @return boolean
+     *
+     * @return bool
      */
     public static function verifyNumber($number)
     {
@@ -193,20 +195,21 @@ class Memory implements BaseInterface
     }
 
     /**
-     * 处理整数部分
+     * 处理整数部分.
      *
      * @param string $number
-     * @param array $options
+     * @param array  $options
+     *
      * @return string
      */
     private static function parseInteger($number, $options)
     {
         // 准备数据，分割为4个数字一组
-        $length = strlen($number);
+        $length = \strlen($number);
         // 同 % 4
         $firstItems = $length & 3;
         $leftStr = substr($number, $firstItems);
-        if('' === $leftStr || false === $leftStr)
+        if ('' === $leftStr || false === $leftStr)
         {
             $split4 = [];
         }
@@ -214,16 +217,15 @@ class Memory implements BaseInterface
         {
             $split4 = str_split($leftStr, 4);
         }
-        if($firstItems > 0)
+        if ($firstItems > 0)
         {
             array_unshift($split4, substr($number, 0, $firstItems));
         }
-        $split4Count = count($split4);
+        $split4Count = \count($split4);
 
-        // 
         $unitIndex = ($length - 1) / 4 >> 0;
 
-        if(0 === $unitIndex)
+        if (0 === $unitIndex)
         {
             $unitIndex = -1;
         }
@@ -233,55 +235,55 @@ class Memory implements BaseInterface
         }
 
         $result = '';
-        foreach($split4 as $i => $item)
+        foreach ($split4 as $i => $item)
         {
             $index = $unitIndex - $i;
 
-            $length = strlen($item);
+            $length = \strlen($item);
 
             $itemResult = '';
             $has0 = false;
-            for($j = 0; $j < $length; ++$j)
+            for ($j = 0; $j < $length; ++$j)
             {
-                if(0 == $item[$j])
+                if (0 == $item[$j])
                 {
                     $has0 = true;
                 }
                 else
                 {
-                    if($has0)
+                    if ($has0)
                     {
                         $itemResult .= static::$numberMap[0];
                         $has0 = false;
                     }
                     $itemResult .= static::$numberMap[$item[$j]];
-                    if(isset(static::$unitMap[$length - $j - 2]))
+                    if (isset(static::$unitMap[$length - $j - 2]))
                     {
                         $itemResult .= static::$unitMap[$length - $j - 2];
                     }
                 }
             }
-            if($has0)
+            if ($has0)
             {
                 $itemResult .= static::$numberMap[0];
             }
-            if('' === $itemResult)
+            if ('' === $itemResult)
             {
-                if(isset(static::$unitMap[$index]))
+                if (isset(static::$unitMap[$index]))
                 {
-                    if($index > 3)
+                    if ($index > 3)
                     {
                         $result .= static::$unitMap[$index];
                     }
                 }
-                else if('0' != $item)
+                elseif ('0' != $item)
                 {
                     $result .= isset(static::$unitMap[$index + 1]) ? static::$unitMap[$index + 1] : str_repeat(static::$unitMap[3], max($index - 3, 0));
                 }
             }
             else
             {
-                if($i !== $split4Count - 1 && isset(static::$unitMap[$index]))
+                if ($i !== $split4Count - 1 && isset(static::$unitMap[$index]))
                 {
                     $unit = static::$unitMap[$index];
                 }
@@ -292,31 +294,33 @@ class Memory implements BaseInterface
                 $result .= $itemResult . $unit;
             }
         }
-        if('' !== $result)
+        if ('' !== $result)
         {
             $result .= static::$moneyUnitMap[0][0];
         }
+
         return $result;
     }
 
     /**
-     * 处理小数部分
+     * 处理小数部分.
      *
      * @param string $number
-     * @param array $options
+     * @param array  $options
+     *
      * @return string
      */
     private static function parseDecimal($number, $options)
     {
-        if('' === $number)
+        if ('' === $number)
         {
             return '';
         }
         $result = '';
-        $length = strlen($number);
-        for($i = 0; $i < $length; ++$i)
+        $length = \strlen($number);
+        for ($i = 0; $i < $length; ++$i)
         {
-            if(0 == $number[$i])
+            if (0 == $number[$i])
             {
                 $result .= static::$numberMap[$number[$i]];
             }

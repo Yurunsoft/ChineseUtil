@@ -1,9 +1,10 @@
 <?php
+
 namespace Yurun\Util\ChineseUtil\Test\Number;
 
+use PHPUnit\Framework\TestCase;
 use Yurun\Util\Chinese;
 use Yurun\Util\Chinese\Number;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @testdox 中文数字转换
@@ -11,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 abstract class BaseNumberTest extends TestCase
 {
     /**
-     * 模式
+     * 模式.
      *
      * @var string
      */
@@ -19,7 +20,6 @@ abstract class BaseNumberTest extends TestCase
 
     protected function check()
     {
-
     }
 
     public function testMode()
@@ -38,10 +38,10 @@ abstract class BaseNumberTest extends TestCase
 
         // 过滤一十二的一
         $this->assertEquals('五', Number::toChinese(5, [
-            'tenMin'    =>  true,
+            'tenMin'    => true,
         ]));
         $this->assertEquals('十二', Number::toChinese(12, [
-            'tenMin'    =>  true,
+            'tenMin'    => true,
         ]));
 
         // 负数
@@ -49,7 +49,6 @@ abstract class BaseNumberTest extends TestCase
 
         // 小数
         $this->assertEquals('三点一四一五', Number::toChinese(3.1415));
-
     }
 
     public function testToNumber()
@@ -66,5 +65,4 @@ abstract class BaseNumberTest extends TestCase
         // 小数
         $this->assertEquals(3.1415, Number::toNumber('三点一四一五'));
     }
-
 }
