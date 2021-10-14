@@ -183,7 +183,7 @@ class Memory implements BaseInterface
         {
             return $pom . static::parseInteger($integer, $options) . static::parseDecimal($decimal, $options);
         }
-        elseif (0 == $decimal)
+        elseif (!$decimal)
         {
             return static::$numberMap[0] . static::$moneyUnitMap[0][0];
         }
