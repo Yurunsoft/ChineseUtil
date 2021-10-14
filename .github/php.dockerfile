@@ -5,7 +5,9 @@ RUN apt update
 
 RUN apt -yqq install unzip libsqlite3-dev libonig-dev
 
-RUN curl -k -o /usr/bin/composer https://getcomposer.org/composer.phar && chmod +x /usr/bin/composer
+RUN update-ca-certificates
+
+RUN curl -o /usr/bin/composer https://getcomposer.org/composer.phar && chmod +x /usr/bin/composer
 
 RUN docker-php-ext-install bcmath mbstring pdo_sqlite > /dev/null
 
