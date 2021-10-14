@@ -35,6 +35,7 @@ abstract class BaseNumberTest extends TestCase
         // 数字
         $this->assertEquals('五', Number::toChinese(5));
         $this->assertEquals('一十二', Number::toChinese(12));
+        $this->assertEquals('三十', Number::toChinese(30));
 
         // 过滤一十二的一
         $this->assertEquals('五', Number::toChinese(5, [
@@ -49,6 +50,7 @@ abstract class BaseNumberTest extends TestCase
 
         // 小数
         $this->assertEquals('三点一四一五', Number::toChinese(3.1415));
+        $this->assertEquals('零点一四一五', Number::toChinese(0.1415));
     }
 
     public function testToNumber()

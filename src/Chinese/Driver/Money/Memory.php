@@ -179,7 +179,18 @@ class Memory implements BaseInterface
             $pom = '';
         }
 
-        return $pom . static::parseInteger($integer, $options) . static::parseDecimal($decimal, $options);
+        if ($integer > 0)
+        {
+            return $pom . static::parseInteger($integer, $options) . static::parseDecimal($decimal, $options);
+        }
+        elseif (0 == $decimal)
+        {
+            return static::$numberMap[0] . static::$moneyUnitMap[0][0];
+        }
+        else
+        {
+            return $pom . static::parseDecimal($decimal, $options);
+        }
     }
 
     /**
@@ -296,7 +307,11 @@ class Memory implements BaseInterface
         }
         if ('' !== $result)
         {
-            $result .= static::$moneyUnitMap[0][0];
+            $result = Util::mbRtrim($result, static::$numberMap[0]);
+            if ('' !== $result)
+            {
+                $result .= static::$moneyUnitMap[0][0];
+            }
         }
 
         return $result;

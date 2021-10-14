@@ -1,6 +1,6 @@
 #!/bin/bash
 
-swooleVersion="4.5.2"
+swooleVersion="4.5.11"
 
 wget -O swoole.tar.gz https://github.com/swoole/swoole-src/archive/v$swooleVersion.tar.gz
 
