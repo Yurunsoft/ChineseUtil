@@ -3,9 +3,7 @@ FROM php:${PHP_DOCKER_VERSION}-cli
 
 RUN apt update
 
-RUN apt -yqq install unzip libsqlite3-dev libonig-dev
-
-RUN update-ca-certificates
+RUN apt -yqq install unzip libsqlite3-dev libonig-dev ca-certificates
 
 RUN curl -o /usr/bin/composer https://getcomposer.org/composer.phar && chmod +x /usr/bin/composer
 
