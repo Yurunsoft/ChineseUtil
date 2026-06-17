@@ -227,7 +227,6 @@ class Memory extends Base
                     $list[] = [
                         'pinyin'            => [$word],
                         'pinyinSound'       => [$word],
-                        'pinyinSound'       => [$word],
                         'pinyinSoundNumber' => [$word],
                     ];
                 }

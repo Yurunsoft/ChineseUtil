@@ -76,6 +76,7 @@ class FFIDriver
                     {
                         $library = "libchinese_util-php{$phpVersion}.so";
                     }
+                    break;
             }
             $library = $clibPath . '/' . $library;
         }
