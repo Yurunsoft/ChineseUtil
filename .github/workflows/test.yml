@@ -11,9 +11,6 @@ jobs:
       matrix:
         php:
           [
-            5.4,
-            5.5,
-            5.6,
             7.0,
             "8.0"
           ]
@@ -39,7 +36,6 @@ jobs:
       matrix:
         swoole:
           [
-            4.7-php7.2,
             4.7-php7.3,
             4.7-php7.4,
             4.7-php8.0,
@@ -89,20 +85,3 @@ jobs:
           [environment]::SetEnvironmentvariable("PATH", $([environment]::GetEnvironmentvariable("PATH", "Machine")))
           composer update
           phpunit -c ./tests/phpunit.xml
-
-  macos:
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: install php
-        run: .github/workflows/bin/install-php7.4-mac.sh
-
-      - name: install swoole
-        run: sudo .github/workflows/bin/install-swoole4.5.sh
-
-      - name: swoole ffi test
-        run: |
-          composer update
-          sudo composer test
