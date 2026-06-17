@@ -186,7 +186,7 @@ class Memory implements BaseInterface
         }
         $split4Count = \count($split4);
 
-        $unitIndex = ($length - 1) / 4 >> 0;
+        $unitIndex = (int)(($length - 1) / 4);
         if (0 === $unitIndex)
         {
             $unitIndex = -1;

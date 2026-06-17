@@ -114,4 +114,14 @@ abstract class BaseMoneyTestCase extends TestCase
         $this->assertEquals('负零玖分', Money::toChinese(-0.09));
         $this->assertEquals('负零玖分', Money::toChinese('-0.09'));
     }
+
+    public function testIssue19()
+    {
+        $this->check();
+        // ($length-1)/4 产生浮点数时不应触发 PHP 8.2+ deprecation
+        $this->assertEquals('贰拾贰圆', Money::toChinese(22));
+        $this->assertEquals('贰佰贰拾贰圆', Money::toChinese(222));
+        $this->assertEquals('贰仟贰佰贰拾贰圆', Money::toChinese(2222));
+        $this->assertEquals('贰万贰仟贰佰贰拾贰圆', Money::toChinese(22222));
+    }
 }

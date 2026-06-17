@@ -81,4 +81,14 @@ abstract class BaseNumberTestCase extends TestCase
         $this->assertEquals('负零点零九', Number::toChinese(-0.09));
         $this->assertEquals('负零点零九', Number::toChinese('-0.09'));
     }
+
+    public function testIssue19()
+    {
+        $this->check();
+        // ($length-1)/4 产生浮点数时不应触发 PHP 8.2+ deprecation
+        $this->assertEquals('二十二', Number::toChinese(22));
+        $this->assertEquals('二百二十二', Number::toChinese(222));
+        $this->assertEquals('二千二百二十二', Number::toChinese(2222));
+        $this->assertEquals('二万二千二百二十二', Number::toChinese(22222));
+    }
 }

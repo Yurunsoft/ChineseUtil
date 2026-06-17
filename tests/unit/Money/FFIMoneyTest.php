@@ -34,4 +34,9 @@ class FFIMoneyTest extends BaseMoneyTestCase
     {
         $this->markTestSkipped('FFI driver not yet fixed for issue #17');
     }
+
+    public function testIssue19()
+    {
+        $this->markTestSkipped('FFI driver not yet fixed for issue #19');
+    }
 }
