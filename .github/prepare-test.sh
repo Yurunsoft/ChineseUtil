@@ -6,7 +6,7 @@ cd $__DIR__
 
 containerName=$1
 
-docker-compose up -d $containerName \
+docker compose up -d $containerName \
 && docker exec $containerName php -v \
 && docker exec $containerName php -m \
 && docker exec $containerName composer -V \
