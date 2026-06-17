@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test;
 /**
  * @testdox FFI Mode
  */
-class FFIModeTest extends BaseTest
+class FFIModeTest extends BaseTestCase
 {
     /**
      * 模式.

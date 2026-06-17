@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test\Money;
 /**
  * @testdox Memory Mode 中文金额转换
  */
-class MemoryNumberTest extends BaseMoneyTest
+class MemoryNumberTest extends BaseMoneyTestCase
 {
     /**
      * 模式.

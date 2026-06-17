@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test\Money;
 /**
  * @testdox SwooleFFI Mode 中文金额转换
  */
-class SwooleFFINumberTest extends BaseMoneyTest
+class SwooleFFINumberTest extends BaseMoneyTestCase
 {
     /**
      * 模式.

@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test;
 /**
  * @testdox SQLite Mode
  */
-class SQLiteModeTest extends BaseTest
+class SQLiteModeTest extends BaseTestCase
 {
     /**
      * 模式.

@@ -9,7 +9,7 @@ use Yurun\Util\Chinese\Money;
 /**
  * @testdox 中文金额转换
  */
-abstract class BaseMoneyTest extends TestCase
+abstract class BaseMoneyTestCase extends TestCase
 {
     /**
      * 模式.

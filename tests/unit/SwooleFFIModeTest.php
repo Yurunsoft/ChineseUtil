@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test;
 /**
  * @testdox Swoole FFI Mode
  */
-class SwooleFFIModeTest extends BaseTest
+class SwooleFFIModeTest extends BaseTestCase
 {
     /**
      * 模式.

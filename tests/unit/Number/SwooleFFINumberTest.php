@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test\Number;
 /**
  * @testdox SwooleFFI Mode 中文数字转换
  */
-class SwooleFFINumberTest extends BaseNumberTest
+class SwooleFFINumberTest extends BaseNumberTestCase
 {
     /**
      * 模式.

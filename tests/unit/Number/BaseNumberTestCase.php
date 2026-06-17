@@ -9,7 +9,7 @@ use Yurun\Util\Chinese\Number;
 /**
  * @testdox 中文数字转换
  */
-abstract class BaseNumberTest extends TestCase
+abstract class BaseNumberTestCase extends TestCase
 {
     /**
      * 模式.

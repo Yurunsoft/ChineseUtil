@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test\Number;
 /**
  * @testdox Memory Mode 中文数字转换
  */
-class MemoryNumberTest extends BaseNumberTest
+class MemoryNumberTest extends BaseNumberTestCase
 {
     /**
      * 模式.

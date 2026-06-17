@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Yurun\Util\Chinese;
 use Yurun\Util\Chinese\Pinyin;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTestCase extends TestCase
 {
     /**
      * 模式.

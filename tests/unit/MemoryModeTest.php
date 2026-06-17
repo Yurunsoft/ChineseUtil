@@ -5,7 +5,7 @@ namespace Yurun\Util\ChineseUtil\Test;
 /**
  * @testdox Memory Mode
  */
-class MemoryModeTest extends BaseTest
+class MemoryModeTest extends BaseTestCase
 {
     /**
      * 模式.
