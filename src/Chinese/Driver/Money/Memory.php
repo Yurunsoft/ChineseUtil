@@ -169,10 +169,14 @@ class Memory implements BaseInterface
 
         list($integer, $decimal) = explode('.', $number . '.');
 
-        if ($integer < 0)
+        $isNegative = ((float) $number) < 0;
+        if ('-' === $integer[0])
+        {
+            $integer = substr($integer, 1);
+        }
+        if ($isNegative)
         {
             $pom = static::$numberMap['-'];
-            $integer = abs($integer);
         }
         else
         {

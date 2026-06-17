@@ -100,4 +100,18 @@ abstract class BaseMoneyTestCase extends TestCase
         $this->assertEquals('叁万圆', Money::toChinese('30000.0'));
         $this->assertEquals('叁万圆', Money::toChinese('30000.00'));
     }
+
+    public function testIssue17()
+    {
+        $this->check();
+        // 负数整数部分为 0 时，应正确保留负号
+        $this->assertEquals('零圆', Money::toChinese(0));
+        $this->assertEquals('零圆', Money::toChinese('0'));
+        $this->assertEquals('零圆', Money::toChinese(-0));
+        $this->assertEquals('零圆', Money::toChinese('-0'));
+        $this->assertEquals('负伍角', Money::toChinese(-0.5));
+        $this->assertEquals('负伍角', Money::toChinese('-0.5'));
+        $this->assertEquals('负零玖分', Money::toChinese(-0.09));
+        $this->assertEquals('负零玖分', Money::toChinese('-0.09'));
+    }
 }

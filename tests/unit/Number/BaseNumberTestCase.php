@@ -67,4 +67,18 @@ abstract class BaseNumberTestCase extends TestCase
         // 小数
         $this->assertEquals(3.1415, Number::toNumber('三点一四一五'));
     }
+
+    public function testIssue17()
+    {
+        $this->check();
+        // 负数整数部分为 0 时，应正确保留负号
+        $this->assertEquals('零', Number::toChinese(0));
+        $this->assertEquals('零', Number::toChinese('0'));
+        $this->assertEquals('零', Number::toChinese(-0));
+        $this->assertEquals('零', Number::toChinese('-0'));
+        $this->assertEquals('负零点五', Number::toChinese(-0.5));
+        $this->assertEquals('负零点五', Number::toChinese('-0.5'));
+        $this->assertEquals('负零点零九', Number::toChinese(-0.09));
+        $this->assertEquals('负零点零九', Number::toChinese('-0.09'));
+    }
 }
